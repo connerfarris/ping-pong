@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Match Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .match-buttons {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button.secondary {
+            background-color: #95a5a6;
+        }
+        button.secondary:hover {
+            background-color: #7f8c8d;
+        }
+        button.danger {
+            background-color: #e74c3c;
+        }
+        button.danger:hover {
+            background-color: #c0392b;
+        }
+        .flash {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash.error {
+            background-color: #ffcccc;
+            border-color: #ff0000;
+        }
+        .flash.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        .stats-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .stats-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .stats-button:hover {
+            background-color: #45a049;
+        }
+        
+        .score-hint {
+            margin-left: 10px;
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+        .preview {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+        }
+        .preview pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: monospace;
+        }
+        .instructions {
+            background-color: #e9f7fe;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .instructions code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .match-entry {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .match-entry h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .match-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .match-grid.singles {
+            grid-template-columns: 1fr 1fr;
+        }
+        .match-grid.doubles {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        .score-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .score-container input {
+            width: 60px;
+            text-align: center;
+        }
+        .score-separator {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .remove-match {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+        }
+        .no-matches-message {
+            font-style: italic;
+            color: #7f8c8d;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+        }
+        
+        .role-indicator {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: normal;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        .role-indicator.server {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .role-indicator.receiver {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Win/Loss styling */
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        
+        .result-type-selector {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .result-type-selector label {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .score-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .winloss-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .winloss-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            min-width: 100px;
+        }
+        
+        .winloss-select option[value="W"] {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .winloss-select option[value="L"] {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #333;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stats-button-container">
+            <a href="{{ url_for('statistics') }}">
+                <button type="button" class="stats-button">View Statistics</button>
+            </a>
+            <a href="{{ url_for('players') }}">
+                <button type="button" class="stats-button">Manage Players</button>
+            </a>
+        </div>
+        <h1>Ping Pong Match Tracker</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p><strong>Getting Started:</strong></p>
+            <ol>
+                <li>Select a date using the date picker - matches will automatically load if they exist</li>
+                <li>Click "Add Match" to add a new match</li>
+                <li>Choose between Singles or Doubles match type</li>
+                <li>Enter player names</li>
+                <li>Choose between Score or Win/Loss input method</li>
+                <li>Click "Save" when done</li>
+            </ol>
+            
+            <p><strong>Match Types:</strong></p>
+            <ul>
+                <li><strong>Singles:</strong> Two players (Player 1 vs Player 2)</li>
+                <li><strong>Doubles:</strong> Two teams of two players each (Team 1 vs Team 2)</li>
+            </ul>
+            
+            <p><strong>Score Input:</strong></p>
+            <ul>
+                <li><strong>Actual Scores:</strong> Enter the real points (e.g., 21-19) when you know the exact score</li>
+                <li><strong>Win/Loss Only:</strong> Enter 1-0 when you only know who won (winner gets 1, loser gets 0)</li>
+            </ul>
+            <p><em>Note: Matches recorded as 1-0 will be excluded from score-related statistics but still count for win/loss records.</em></p>
+            
+            <p><strong>Server/Receiver Roles:</strong></p>
+            <ul>
+                <li>In singles: Player 1 is the first server, Player 2 is the first receiver</li>
+                <li>In doubles: Team 1 Player 1 is the first server, Team 2 Player 1 is the first receiver</li>
+            </ul>
+        </div>
+        
+        <form action="{{ url_for('parse') }}" method="post">
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" value="{{ date }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Match Entries:</label>
+                <div id="matches-container">
+                    <!-- Match entries will be added here dynamically -->
+                    <div class="no-matches-message">No matches added yet. Click "Add Match" to begin.</div>
+                </div>
+                <input type="hidden" id="match_text" name="match_text" value="{{ match_text }}">
+                <div class="button-group match-buttons">
+                    <button type="button" id="add-match-btn" class="secondary">Add Match</button>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit">Save</button>
+                <button type="button" id="clear-btn" class="secondary">Clear</button>
+            </div>
+        </form>
+        
+        {% if preview %}
+            <div class="preview">
+                <h3>JSON Preview (Latest Entry):</h3>
+                <pre>{{ preview }}</pre>
+                {% if total_entries %}
+                    <p>Total entries in JSON file: {{ total_entries }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        // Written by Windsurf
+        document.addEventListener('DOMContentLoaded', function() {
+            const matchesContainer = document.getElementById('matches-container');
+            const addMatchBtn = document.getElementById('add-match-btn');
+            const matchTextInput = document.getElementById('match_text');
+            let matchCounter = 0;
+            let playerList = [];  // Will store the list of players
+            
+            // Load player list from API
+            function loadPlayers() {
+                fetch('/get_players')
+                    .then(response => response.json())
+                    .then(data => {
+                        playerList = data.players || [];
+                        // Populate any existing player dropdowns
+                        populateAllPlayerDropdowns();
+                    })
+                    .catch(error => console.error('Error loading players:', error));
+            }
+            
+            // Populate a single player dropdown
+            function populatePlayerDropdown(dropdown, selectedValue = '') {
+                if (!dropdown) return;
+                
+                // Clear existing options except the first one
+                while (dropdown.options.length > 1) {
+                    dropdown.remove(1);
+                }
+                
+                // Add player options
+                playerList.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player;
+                    option.textContent = player;
+                    if (player === selectedValue) {
+                        option.selected = true;
+                    }
+                    dropdown.appendChild(option);
+                });
+            }
+            
+            // Populate all player dropdowns in the form
+            function populateAllPlayerDropdowns() {
+                const dropdowns = document.querySelectorAll('.player-dropdown');
+                dropdowns.forEach(dropdown => {
+                    populatePlayerDropdown(dropdown, dropdown.value);
+                });
+            }
+            
+            // Load players when the page loads
+            loadPlayers();
+            
+            // Helper function to set selected option in a dropdown
+            function setSelectedOption(dropdown, value) {
+                for (let i = 0; i < dropdown.options.length; i++) {
+                    if (dropdown.options[i].value === value) {
+                        dropdown.selectedIndex = i;
+                        return;
+                    }
+                }
+                
+                // If value not found in existing options, add it
+                if (value) {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = value;
+                    option.selected = true;
+                    dropdown.appendChild(option);
+                }
+            }
+            
+            // Initialize from existing match_text if present
+            initializeFromMatchText();
+            
+            // Add match button click handler
+            addMatchBtn.addEventListener('click', function() {
+                addMatchEntry();
+                updateNoMatchesMessage();
+            });
+            
+            // Add date input change handler to automatically load matches
+            const dateInput = document.getElementById('date');
+            dateInput.addEventListener('change', function() {
+                const date = this.value.trim();
+                if (!date) return;
+                
+                // Validate date format
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!dateRegex.test(date)) {
+                    alert('Please enter a valid date in YYYY-MM-DD format');
+                    return;
+                }
+                
+                // Redirect to load from file with the selected date
+                window.location.href = `/load-from-file?date=${date}`;
+            });
+            
+            // Add clear button click handler to clear all matches for the current day
+            const clearBtn = document.getElementById('clear-btn');
+            clearBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear all matches for this day?')) {
+                    // Remove all match entries
+                    const matchEntries = document.querySelectorAll('.match-entry');
+                    matchEntries.forEach(entry => entry.remove());
+                    
+                    // Clear the hidden match_text input
+                    matchTextInput.value = '';
+                    
+                    // Update the no matches message
+                    updateNoMatchesMessage();
+                }
+            });
+            
+            // No additional button handlers needed as date input now auto-loads
+            
+            // Form submission handler
+            document.querySelector('form').addEventListener('submit', function(e) {
+                // Prevent form submission if validation fails
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Convert form data to match_text format
+                const matchText = generateMatchText();
+                matchTextInput.value = matchText;
+            });
+            
+            function addMatchEntry(type = 'singles', players = [], score = null, winLoss = null) {
+                // Check if we need to remove the "no matches" message
+                const noMatchesMsg = document.querySelector('.no-matches-message');
+                if (noMatchesMsg) {
+                    noMatchesMsg.remove();
+                }
+                
+                const matchId = 'match-' + matchCounter++;
+                const matchEntry = document.createElement('div');
+                matchEntry.className = 'match-entry';
+                matchEntry.id = matchId;
+                
+                // Create match type selector
+                const typeSelector = document.createElement('div');
+                typeSelector.className = 'form-group';
+                typeSelector.innerHTML = `
+                    <label for="${matchId}-type">Match Type:</label>
+                    <select id="${matchId}-type" class="match-type">
+                        <option value="singles" ${type === 'singles' ? 'selected' : ''}>Singles</option>
+                        <option value="doubles" ${type === 'doubles' ? 'selected' : ''}>Doubles</option>
+                    </select>
+                `;
+                
+                // Create player fields container
+                const playersContainer = document.createElement('div');
+                playersContainer.className = `match-grid ${type}`;
+                playersContainer.id = `${matchId}-players`;
+                
+                // Add player fields based on type
+                if (type === 'singles') {
+                    playersContainer.innerHTML = `
+                        <div class="form-group">
+                            <label for="${matchId}-player1">Player 1: <span class="role-indicator server">First Server</span></label>
+                            <select id="${matchId}-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-player2">Player 2: <span class="role-indicator receiver">First Receiver</span></label>
+                            <select id="${matchId}-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    playersContainer.innerHTML = `
+                        <div class="form-group">
+                            <label for="${matchId}-team1-player1">Team 1 Player 1: <span class="role-indicator server">First Server</span></label>
+                            <select id="${matchId}-team1-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team1-player2">Team 1 Player 2:</label>
+                            <select id="${matchId}-team1-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team2-player1">Team 2 Player 1: <span class="role-indicator receiver">First Receiver</span></label>
+                            <select id="${matchId}-team2-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team2-player2">Team 2 Player 2:</label>
+                            <select id="${matchId}-team2-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                    `;
+                }
+                
+                // Create result container
+                const resultContainer = document.createElement('div');
+                resultContainer.className = 'result-container';
+                
+                // Create score input with hint
+                const scoreInput = document.createElement('div');
+                scoreInput.className = 'score-input';
+                scoreInput.id = `${matchId}-score-input`;
+                scoreInput.innerHTML = `
+                    <input type="text" id="${matchId}-score1" class="score" placeholder="21" value="${score ? score[0] : ''}">
+                    <span class="score-separator">-</span>
+                    <input type="text" id="${matchId}-score2" class="score" placeholder="19" value="${score ? score[1] : ''}">
+                    <span class="score-hint">(Use 1-0 for win/loss only)</span>
+                `;
+                
+                // Assemble result container
+                resultContainer.appendChild(scoreInput);
+                
+                // Create remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-match';
+                removeBtn.innerHTML = '×';
+                removeBtn.title = 'Remove match';
+                removeBtn.addEventListener('click', function() {
+                    matchEntry.remove();
+                    updateNoMatchesMessage();
+                });
+                
+                // Assemble match entry
+                matchEntry.appendChild(removeBtn);
+                matchEntry.appendChild(typeSelector);
+                matchEntry.appendChild(playersContainer);
+                matchEntry.appendChild(resultContainer);
+                
+                // Add event listener for match type change
+                const typeSelect = matchEntry.querySelector('.match-type');
+                typeSelect.addEventListener('change', function() {
+                    updatePlayerFields(matchId, this.value);
+                });
+                
+                // Add event listeners to player name inputs to update the win/loss dropdown
+                const addPlayerNameListeners = () => {
+                    // For singles
+                    const player1Input = document.getElementById(`${matchId}-player1`);
+                    const player2Input = document.getElementById(`${matchId}-player2`);
+                    if (player1Input && player2Input) {
+                        player1Input.addEventListener('input', () => {
+                            if (document.querySelector(`input[name="${matchId}-result-type"]:checked`).value === 'winloss') {
+                                updateWinLossDropdown(matchId);
+                            }
+                        });
+                        player2Input.addEventListener('input', () => {
+                            if (document.querySelector(`input[name="${matchId}-result-type"]:checked`).value === 'winloss') {
+                                updateWinLossDropdown(matchId);
+                            }
+                        });
+                    }
+                    
+                    // For doubles
+                    const team1Player1 = document.getElementById(`${matchId}-team1-player1`);
+                    const team1Player2 = document.getElementById(`${matchId}-team1-player2`);
+                    const team2Player1 = document.getElementById(`${matchId}-team2-player1`);
+                    const team2Player2 = document.getElementById(`${matchId}-team2-player2`);
+                    if (team1Player1 && team1Player2 && team2Player1 && team2Player2) {
+                        [team1Player1, team1Player2, team2Player1, team2Player2].forEach(input => {
+                            input.addEventListener('input', () => {
+                                if (document.querySelector(`input[name="${matchId}-result-type"]:checked`).value === 'winloss') {
+                                    updateWinLossDropdown(matchId);
+                                }
+                            });
+                        });
+                    }
+                };
+                
+                // Add listeners initially
+                addPlayerNameListeners();
+                
+                // Update listeners when player fields change
+                typeSelect.addEventListener('change', () => {
+                    // Wait for DOM to update
+                    setTimeout(addPlayerNameListeners, 100);
+                });
+                
+                // Add to container
+                matchesContainer.appendChild(matchEntry);
+                
+                // Populate player dropdowns
+                const playerDropdowns = matchEntry.querySelectorAll('.player-dropdown');
+                playerDropdowns.forEach(dropdown => {
+                    populatePlayerDropdown(dropdown);
+                });
+                
+                // Set selected values if provided
+                if (players && players.length > 0) {
+                    if (type === 'singles') {
+                        const player1Dropdown = document.getElementById(`${matchId}-player1`);
+                        const player2Dropdown = document.getElementById(`${matchId}-player2`);
+                        if (player1Dropdown && players[0]) setSelectedOption(player1Dropdown, players[0]);
+                        if (player2Dropdown && players[1]) setSelectedOption(player2Dropdown, players[1]);
+                    } else { // doubles
+                        const team1Player1 = document.getElementById(`${matchId}-team1-player1`);
+                        const team1Player2 = document.getElementById(`${matchId}-team1-player2`);
+                        const team2Player1 = document.getElementById(`${matchId}-team2-player1`);
+                        const team2Player2 = document.getElementById(`${matchId}-team2-player2`);
+                        if (team1Player1 && players[0]) setSelectedOption(team1Player1, players[0]);
+                        if (team1Player2 && players[1]) setSelectedOption(team1Player2, players[1]);
+                        if (team2Player1 && players[2]) setSelectedOption(team2Player1, players[2]);
+                        if (team2Player2 && players[3]) setSelectedOption(team2Player2, players[3]);
+                    }
+                }
+            }
+            
+            function updatePlayerFields(matchId, type) {
+                const playersContainer = document.getElementById(`${matchId}-players`);
+                playersContainer.className = `match-grid ${type}`;
+                
+                if (type === 'singles') {
+                    playersContainer.innerHTML = `
+                        <div class="form-group">
+                            <label for="${matchId}-player1">Player 1: <span class="role-indicator server">First Server</span></label>
+                            <select id="${matchId}-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-player2">Player 2: <span class="role-indicator receiver">First Receiver</span></label>
+                            <select id="${matchId}-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    playersContainer.innerHTML = `
+                        <div class="form-group">
+                            <label for="${matchId}-team1-player1">Team 1 Player 1: <span class="role-indicator server">First Server</span></label>
+                            <select id="${matchId}-team1-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team1-player2">Team 1 Player 2:</label>
+                            <select id="${matchId}-team1-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team2-player1">Team 2 Player 1: <span class="role-indicator receiver">First Receiver</span></label>
+                            <select id="${matchId}-team2-player1" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="${matchId}-team2-player2">Team 2 Player 2:</label>
+                            <select id="${matchId}-team2-player2" class="player-name player-dropdown">
+                                <option value="">Select Player</option>
+                            </select>
+                        </div>
+                    `;
+                }
+                
+                // Populate the new player dropdowns
+                const dropdowns = playersContainer.querySelectorAll('.player-dropdown');
+                dropdowns.forEach(dropdown => {
+                    populatePlayerDropdown(dropdown);
+                });
+            }
+            
+            function updateNoMatchesMessage() {
+                // First, remove any existing no-matches messages
+                const existingMsgs = document.querySelectorAll('.no-matches-message');
+                existingMsgs.forEach(msg => msg.remove());
+                
+                // Then, add a new message only if there are no match entries
+                const matchEntries = document.querySelectorAll('.match-entry');
+                if (matchEntries.length === 0) {
+                    const noMatchesMsg = document.createElement('div');
+                    noMatchesMsg.className = 'no-matches-message';
+                    noMatchesMsg.textContent = 'No matches added yet. Click "Add Match" to begin.';
+                    matchesContainer.appendChild(noMatchesMsg);
+                }
+            }
+            
+            // Function to toggle between score and win/loss input types
+            function toggleResultType(matchId) {
+                const scoreInput = document.getElementById(`${matchId}-score-input`);
+                const winLossInput = document.getElementById(`${matchId}-winloss-input`);
+                const resultType = document.querySelector(`input[name="${matchId}-result-type"]:checked`).value;
+                
+                if (resultType === 'score') {
+                    scoreInput.style.display = 'flex';
+                    winLossInput.style.display = 'none';
+                } else {
+                    scoreInput.style.display = 'none';
+                    winLossInput.style.display = 'flex';
+                    
+                    // Update the dropdown with player names
+                    updateWinLossDropdown(matchId);
+                }
+            }
+            
+            // Function to update the win/loss dropdown with player names
+            function updateWinLossDropdown(matchId) {
+                const matchEntry = document.getElementById(matchId);
+                const type = matchEntry.querySelector('.match-type').value;
+                const winLossSelect = document.getElementById(`${matchId}-winloss`);
+                
+                if (type === 'singles') {
+                    // Get player names
+                    const player1Input = document.getElementById(`${matchId}-player1`);
+                    const player2Input = document.getElementById(`${matchId}-player2`);
+                    
+                    if (player1Input && player2Input) {
+                        const player1Name = player1Input.value.trim() || 'Player 1';
+                        const player2Name = player2Input.value.trim() || 'Player 2';
+                        
+                        // Update dropdown options
+                        winLossSelect.innerHTML = `
+                            <option value="P1">${player1Name}</option>
+                            <option value="P2">${player2Name}</option>
+                        `;
+                        
+                        // Add a label before the select
+                        const label = document.createElement('label');
+                        label.innerHTML = '<strong>Winner:</strong>';
+                        
+                        // Clear and rebuild the winLossInput
+                        const winLossInput = document.getElementById(`${matchId}-winloss-input`);
+                        winLossInput.innerHTML = '';
+                        winLossInput.appendChild(label);
+                        winLossInput.appendChild(winLossSelect);
+                    }
+                } else { // doubles
+                    // Get team names
+                    const team1Player1 = document.getElementById(`${matchId}-team1-player1`);
+                    const team1Player2 = document.getElementById(`${matchId}-team1-player2`);
+                    const team2Player1 = document.getElementById(`${matchId}-team2-player1`);
+                    const team2Player2 = document.getElementById(`${matchId}-team2-player2`);
+                    
+                    if (team1Player1 && team1Player2 && team2Player1 && team2Player2) {
+                        const team1Label = (team1Player1.value.trim() && team1Player2.value.trim()) ? 
+                            `${team1Player1.value.trim()} & ${team1Player2.value.trim()}` : 'Team 1';
+                        const team2Label = (team2Player1.value.trim() && team2Player2.value.trim()) ? 
+                            `${team2Player1.value.trim()} & ${team2Player2.value.trim()}` : 'Team 2';
+                        
+                        // Update dropdown options
+                        winLossSelect.innerHTML = `
+                            <option value="T1">${team1Label}</option>
+                            <option value="T2">${team2Label}</option>
+                        `;
+                        
+                        // Add a label before the select
+                        const label = document.createElement('label');
+                        label.innerHTML = '<strong>Winner:</strong>';
+                        
+                        // Clear and rebuild the winLossInput
+                        const winLossInput = document.getElementById(`${matchId}-winloss-input`);
+                        winLossInput.innerHTML = '';
+                        winLossInput.appendChild(label);
+                        winLossInput.appendChild(winLossSelect);
+                    }
+                }
+            }
+            
+            function validateForm() {
+                const matchEntries = document.querySelectorAll('.match-entry');
+                if (matchEntries.length === 0) {
+                    // Allow form submission with no matches - the server will handle this case
+                    return true;
+                }
+                
+                let isValid = true;
+                
+                matchEntries.forEach(entry => {
+                    const type = entry.querySelector('.match-type').value;
+                    const playerInputs = entry.querySelectorAll('.player-name');
+                    
+                    // Check player names
+                    playerInputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.style.borderColor = 'red';
+                        } else {
+                            input.style.borderColor = '';
+                        }
+                    });
+                    
+                    // Check scores
+                    const score1 = entry.querySelector('#' + entry.id + '-score1').value.trim();
+                    const score2 = entry.querySelector('#' + entry.id + '-score2').value.trim();
+                    
+                    if (!score1 || isNaN(score1)) {
+                        isValid = false;
+                        entry.querySelector('#' + entry.id + '-score1').style.borderColor = 'red';
+                    } else {
+                        entry.querySelector('#' + entry.id + '-score1').style.borderColor = '';
+                    }
+                    
+                    if (!score2 || isNaN(score2)) {
+                        isValid = false;
+                        entry.querySelector('#' + entry.id + '-score2').style.borderColor = 'red';
+                    } else {
+                        entry.querySelector('#' + entry.id + '-score2').style.borderColor = '';
+                    }
+                });
+                
+                if (!isValid) {
+                    alert('Please fill in all required fields with valid values.');
+                }
+                
+                return isValid;
+            }
+            
+            function generateMatchText() {
+                const matchEntries = document.querySelectorAll('.match-entry');
+                let matchLines = [];
+                
+                matchEntries.forEach(entry => {
+                    const type = entry.querySelector('.match-type').value;
+                    
+                    // Get score values directly (no more radio buttons)
+                    const score1 = entry.querySelector('#' + entry.id + '-score1').value.trim();
+                    const score2 = entry.querySelector('#' + entry.id + '-score2').value.trim();
+                    const resultText = `${score1}-${score2}`;
+                    
+                    let line = '';
+                    
+                    if (type === 'singles') {
+                        const player1 = entry.querySelector('#' + entry.id + '-player1').value.trim();
+                        const player2 = entry.querySelector('#' + entry.id + '-player2').value.trim();
+                        line = `${quoteName(player1)} ${quoteName(player2)} ${resultText}`;
+                    } else {
+                        const team1Player1 = entry.querySelector('#' + entry.id + '-team1-player1').value.trim();
+                        const team1Player2 = entry.querySelector('#' + entry.id + '-team1-player2').value.trim();
+                        const team2Player1 = entry.querySelector('#' + entry.id + '-team2-player1').value.trim();
+                        const team2Player2 = entry.querySelector('#' + entry.id + '-team2-player2').value.trim();
+                        line = `${quoteName(team1Player1)} ${quoteName(team1Player2)} ${quoteName(team2Player1)} ${quoteName(team2Player2)} ${resultText}`;
+                    }
+                    
+                    matchLines.push(line);
+                });
+                
+                return matchLines.join('\n');
+            }
+            
+            function initializeFromMatchText() {
+                const matchText = matchTextInput.value.trim();
+                if (!matchText) {
+                    updateNoMatchesMessage();
+                    return;
+                }
+                
+                const lines = matchText.split('\n');
+                
+                lines.forEach(line => {
+                    const parts = tokenizeLine(line.trim());
+                    if (parts.length < 3) return; // Skip invalid lines
+                    
+                    const resultPart = parts[parts.length - 1];
+                    let score = null;
+                    let winLoss = null;
+                    let players = null;
+                    
+                    // Check if it's a score format (e.g., 21-18)
+                    const scoreMatch = resultPart.match(/^(\d+)-(\d+)$/);
+                    
+                    // Check if it's a win/loss format: W/L or P1/P2 (singles) or T1/T2 (doubles)
+                    const winLossMatch = resultPart.match(/^(?:[WwLl]|[PpTt][12])$/);
+                    
+                    if (scoreMatch) {
+                        // Score format
+                        score = [scoreMatch[1], scoreMatch[2]];
+                        players = parts.slice(0, -1);
+                    } else if (winLossMatch) {
+                        // Win/Loss format
+                        winLoss = resultPart.toUpperCase();
+                        players = parts.slice(0, -1);
+                        // Prefill placeholder scores based on winner indication
+                        if (winLoss === 'W' || winLoss === 'P1' || winLoss === 'T1') {
+                            score = ['1', '0'];
+                        } else {
+                            score = ['0', '1'];
+                        }
+                    } else {
+                        return; // Skip invalid format
+                    }
+                    
+                    if (players.length === 2) {
+                        // Singles match
+                        addMatchEntry('singles', players, score, winLoss);
+                    } else if (players.length === 4) {
+                        // Doubles match
+                        addMatchEntry('doubles', players, score, winLoss);
+                    }
+                });
+                
+                updateNoMatchesMessage();
+            }
+
+            // Helpers for handling names with spaces
+            function quoteName(name) {
+                if (!name) return '';
+                // Escape existing quotes
+                const needsQuotes = /\s|"/.test(name);
+                const escaped = name.replace(/"/g, '\\"');
+                return needsQuotes ? `"${escaped}"` : escaped;
+            }
+
+            function tokenizeLine(line) {
+                const tokens = [];
+                const regex = /"((?:\\.|[^"\\])*)"|(\S+)/g;
+                let match;
+                while ((match = regex.exec(line)) !== null) {
+                    if (match[1] !== undefined) {
+                        // Quoted token: unescape quotes
+                        tokens.push(match[1].replace(/\\"/g, '"'));
+                    } else if (match[2] !== undefined) {
+                        tokens.push(match[2]);
+                    }
+                }
+                return tokens;
+            }
+        });
+    </script>
+</body>
+</html>
