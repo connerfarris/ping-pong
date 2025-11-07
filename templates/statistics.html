@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Statistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #3498db;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .nav-buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        .nav-buttons a:hover {
+            background-color: #2980b9;
+        }
+        .flash {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-color: #ddd;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Match details modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover,
+        .close-modal:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .show-matches-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        
+        .show-matches-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .match-list {
+            margin-top: 15px;
+        }
+        
+        .match-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .match-item:last-child {
+            border-bottom: none;
+        }
+        
+        .match-date {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .match-players {
+            margin-top: 5px;
+        }
+        
+        .match-score {
+            font-weight: bold;
+        }
+        
+        .winner {
+            color: #27ae60;
+        }
+        
+        .loser {
+            color: #e74c3c;
+        }
+    </style>
+    <!-- Include Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Time adapter for Chart.js time scale -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Ping Pong Statistics</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="nav-buttons">
+            <a href="{{ url_for('index') }}">Back to Match Tracker</a>
+        </div>
+
+        <!-- Head-to-Head (Singles) Tab -->
+        <div id="head-to-head-singles" class="tab-content">
+            <h2>Head-to-Head (Singles)</h2>
+            <p>Singles records between players. Click "Show Matches" to see detailed match history.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Players</th>
+                        <th>Matches</th>
+                        <th>{{ 'Wins ' }}</th>
+                        <th>{{ 'Wins ' }}</th>
+                        <th>Win Rate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set h2h = stats.head_to_head_singles %}
+                    {% for key, rec in h2h.items()|sort(attribute='1.matches', reverse=True) %}
+                    <tr>
+                        <td>{{ rec.p1 }} vs {{ rec.p2 }}</td>
+                        <td>{{ rec.matches }}</td>
+                        <td>{{ rec.p1 }}: {{ rec.wins_p1 }}</td>
+                        <td>{{ rec.p2 }}: {{ rec.wins_p2 }}</td>
+                        <td>{{ rec.win_rate_p1 }}% / {{ rec.win_rate_p2 }}%</td>
+                        <td>
+                            <button class="show-matches-btn" onclick="showMatchDetails('headtohead', '{{ rec.p1 }}>{{ rec.p2 }}', '{{ rec.p1 }}>{{ rec.p2 }}')">Show Matches</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Elo Ratings Tab -->
+        <div id="elo-ratings" class="tab-content">
+            <h2>Elo Ratings</h2>
+
+            <div class="nav-buttons" style="justify-content:flex-start; gap:8px; margin-top:0;">
+                <a href="#" class="elo-mode-btn active" data-mode="overall">Overall</a>
+                <a href="#" class="elo-mode-btn" data-mode="singles">Singles</a>
+                <a href="#" class="elo-mode-btn" data-mode="doubles">Doubles</a>
+            </div>
+
+            <!-- Overall Elo Table -->
+            <table id="eloTable-overall">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Elo Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set elo_overall = stats.elo.overall.current_ratings %}
+                    {% for player, rating in elo_overall.items()|sort(attribute='1', reverse=True) %}
+                    <tr>
+                        <td>{{ player }}</td>
+                        <td>{{ rating }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Singles Elo Table -->
+            <table id="eloTable-singles" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Elo Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set elo_singles = stats.elo.singles.current_ratings %}
+                    {% for player, rating in elo_singles.items()|sort(attribute='1', reverse=True) %}
+                    <tr>
+                        <td>{{ player }}</td>
+                        <td>{{ rating }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Doubles Elo Table -->
+            <table id="eloTable-doubles" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Elo Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set elo_doubles = stats.elo.doubles.current_ratings %}
+                    {% for player, rating in elo_doubles.items()|sort(attribute='1', reverse=True) %}
+                    <tr>
+                        <td>{{ player }}</td>
+                        <td>{{ rating }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="chart-container">
+                <canvas id="eloChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <div class="tab active" data-tab="player-stats">Player Stats</div>
+            <div class="tab" data-tab="match-analytics">Match Analytics</div>
+            <div class="tab" data-tab="team-dynamics">Team Dynamics</div>
+            <div class="tab" data-tab="doubles-serving">Doubles Serving</div>
+            <div class="tab" data-tab="score-patterns">Score Patterns</div>
+            <div class="tab" data-tab="temporal-analysis">Temporal Analysis</div>
+            <div class="tab" data-tab="elo-ratings">Elo Ratings</div>
+            <div class="tab" data-tab="head-to-head-singles">Head-to-Head (Singles)</div>
+        </div>
+        
+        <!-- Player Stats Tab -->
+        <div id="player-stats" class="tab-content active">
+            <h2>Player Performance</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Players</h3>
+                    <div class="stat-value">{{ stats.player_stats|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Points Scored</h3>
+                    <div class="stat-value">{{ stats.total_points }}</div>
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">From score-based matches only</p>
+                </div>
+            </div>
+            
+            <h3>Singles Player Performance</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Singles Matches</th>
+                        <th>Singles Wins</th>
+                        <th>Singles Win %</th>
+                        <th>Singles W/P</th>
+                        <th>Best Streak</th>
+                        <th>Current Streak</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player, data in stats.player_stats.items()|sort(attribute='1.singles_win_percentage', reverse=True) %}
+                    {% if data.singles_played > 0 %}
+                    <tr>
+                        <td>{{ player }}</td>
+                        <td>{{ data.singles_played }}</td>
+                        <td>{{ data.singles_won }}</td>
+                        <td>{{ data.singles_win_percentage }}%</td>
+                        <td>{{ data.singles_won }}/{{ data.singles_played }}</td>
+                        <td>{{ data.best_streak }}</td>
+                        <td>{{ data.current_streak }}</td>
+                        <td><button class="show-matches-btn" onclick="showMatchDetails('player', '{{ player }}', '{{ player }}')">Show Matches</button></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Doubles Player Performance</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Doubles Matches</th>
+                        <th>Doubles Wins</th>
+                        <th>Doubles Win %</th>
+                        <th>Doubles W/P</th>
+                        <th>Best Streak</th>
+                        <th>Current Streak</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player, data in stats.player_stats.items()|sort(attribute='1.doubles_win_percentage', reverse=True) %}
+                    {% if data.doubles_played > 0 %}
+                    <tr>
+                        <td>{{ player }}</td>
+                        <td>{{ data.doubles_played }}</td>
+                        <td>{{ data.doubles_won }}</td>
+                        <td>{{ data.doubles_win_percentage }}%</td>
+                        <td>{{ data.doubles_won }}/{{ data.doubles_played }}</td>
+                        <td>{{ data.best_streak }}</td>
+                        <td>{{ data.current_streak }}</td>
+                        <td><button class="show-matches-btn" onclick="showMatchDetails('player', '{{ player }}', '{{ player }}')">Show Matches</button></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="chart-container">
+                <canvas id="playerWinRateChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Match Analytics Tab -->
+        <div id="match-analytics" class="tab-content">
+            <h2>Match Analytics</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Matches</h3>
+                    <div class="stat-value">{{ stats.match_analytics.total_matches }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Singles Matches</h3>
+                    <div class="stat-value">{{ stats.match_analytics.singles_matches }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Doubles Matches</h3>
+                    <div class="stat-value">{{ stats.match_analytics.doubles_matches }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg Score Difference</h3>
+                    <div class="stat-value">{{ stats.match_analytics.avg_score_difference }}</div>
+                </div>
+            </div>
+            
+            <h3>Match Frequency by Day</h3>
+            <div class="chart-container">
+                <canvas id="dayFrequencyChart"></canvas>
+            </div>
+            
+            <h3>Singles vs Doubles Distribution</h3>
+            <div class="chart-container">
+                <canvas id="matchTypeChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Team Dynamics Tab -->
+        <div id="team-dynamics" class="tab-content">
+            <h2>Team Dynamics</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Partnership</th>
+                        <th>Matches</th>
+                        <th>Wins</th>
+                        <th>Win Rate</th>
+                        <th>Points Scored</th>
+                        <th>Points Conceded</th>
+                        <th>Point Diff</th>
+                        <th>Point Diff/Game</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team, data in stats.team_dynamics.items()|sort(attribute='1.win_rate', reverse=True) %}
+                    <tr>
+                        <td>{{ team.replace("'", "").replace("(", "").replace(")", "").replace(",", " &") }}</td>
+                        <td>{{ data.played }}</td>
+                        <td>{{ data.won }}</td>
+                        <td>{{ data.win_rate }}%</td>
+                        <td>{{ data.points_scored }}</td>
+                        <td>{{ data.points_conceded }}</td>
+                        <td>{{ data.point_diff }}</td>
+                        <td>{{ data.point_diff_per_game }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="chart-container">
+                <canvas id="teamWinRateChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Doubles Serving Tab -->
+        <div id="doubles-serving" class="tab-content">
+            <h2>Doubles Serving Statistics</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Server-Receiver Pairs</h3>
+                    <p>For each server-receiver pair, this shows how many games the server's team won.</p>
+                    <p>In doubles, the serving rotation follows this pattern:</p>
+                    <ol>
+                        <li>Team 1 Player 1 serves to Team 2 Player 1</li>
+                        <li>Team 2 Player 1 serves to Team 1 Player 2</li>
+                        <li>Team 1 Player 2 serves to Team 2 Player 2</li>
+                        <li>Team 2 Player 2 serves to Team 1 Player 1</li>
+                    </ol>
+                </div>
+            </div>
+            
+            
+            <h3>Player Serving Performance</h3>
+            <p>How each player performs when serving to specific receivers</p>
+            {% for server, receivers in stats.doubles_serving.player_pairs.items()|sort %}
+                <h4>{{ server }} serving to:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Receiver</th>
+                            <th>Matches</th>
+                            <th>Wins</th>
+                            <th>Win Rate</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for receiver, stats in receivers.items()|sort(attribute='1.win_rate', reverse=True) %}
+                        <tr>
+                            <td>{{ receiver }}</td>
+                            <td>{{ stats.matches }}</td>
+                            <td>{{ stats.wins }}</td>
+                            <td>{{ stats.win_rate }}%</td>
+                            <td><button class="show-matches-btn" onclick="showMatchDetails('server_receiver', '{{ server }}>{{ receiver }}', '{{ server }}>{{ receiver }}')">Show Matches</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+            
+            <h3>Match Groups - Team Configurations</h3>
+            <p>Statistics for matches with the same 4 players but different team configurations. This shows how different team pairings perform when the same four players play together, regardless of who serves first.</p>
+            {% for group, group_stats in stats.doubles_serving.match_groups.items() %}
+                    <h4>Players: {{ group }}</h4>
+                    <p>Total matches with these players: {{ group_stats.matches }}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Team 1</th>
+                                <th>Team 2</th>
+                                <th>Matches</th>
+                                <th>Team 1 Wins</th>
+                                <th>Win Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for config, config_stats in group_stats.configurations.items()|sort(attribute='1.win_rate', reverse=True) %}
+                            {% set config_parts = config.split(",") %}
+                            <tr>
+                                <td>{{ config_parts[0] }} & {{ config_parts[1] }}</td>
+                                <td>{{ config_parts[2] }} & {{ config_parts[3] }}</td>
+                                <td>{{ config_stats.matches }}</td>
+                                <td>{{ config_stats.wins }}</td>
+                                <td>{{ config_stats.win_rate }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            {% endfor %}
+            
+        </div>
+        
+        <!-- Score Patterns Tab -->
+        <div id="score-patterns" class="tab-content">
+            <h2>Score Patterns</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Avg Points Per Player</h3>
+                    <div class="stat-value">{{ stats.score_patterns.avg_points_per_player }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Median Score Difference</h3>
+                    <div class="stat-value">{{ stats.score_patterns.median_score_difference }}</div>
+                </div>
+            </div>
+            
+            <h3>Closest Matches</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Match</th>
+                        <th>Score</th>
+                        <th>Difference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in stats.score_patterns.closest_matches %}
+                    <tr>
+                        <td>{{ match.date }}</td>
+                        <td>
+                            {% if match.type == 'singles' %}
+                                {{ match.player1 }} vs {{ match.player2 }}
+                            {% else %}
+                                {{ match.team1[0] }}/{{ match.team1[1] }} vs {{ match.team2[0] }}/{{ match.team2[1] }}
+                            {% endif %}
+                        </td>
+                        <td>{{ match.score }}</td>
+                        <td>{{ match.difference }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <h3>Most Decisive Victories</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Match</th>
+                        <th>Score</th>
+                        <th>Difference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in stats.score_patterns.decisive_victories %}
+                    <tr>
+                        <td>{{ match.date }}</td>
+                        <td>
+                            {% if match.type == 'singles' %}
+                                {{ match.player1 }} vs {{ match.player2 }}
+                            {% else %}
+                                {{ match.team1[0] }}/{{ match.team1[1] }} vs {{ match.team2[0] }}/{{ match.team2[1] }}
+                            {% endif %}
+                        </td>
+                        <td>{{ match.score }}</td>
+                        <td>{{ match.difference }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <h3>Score Distribution</h3>
+            <div class="chart-container">
+                <canvas id="scoreDistributionChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Temporal Analysis Tab -->
+        <div id="temporal-analysis" class="tab-content">
+            <h2>Temporal Analysis</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Most Active Date</h3>
+                    <div class="stat-value">{{ stats.temporal_analysis.most_active_date }}</div>
+                </div>
+            </div>
+            
+            <h3>Matches Over Time</h3>
+            <div class="chart-container">
+                <canvas id="matchesOverTimeChart"></canvas>
+            </div>
+            
+            <h3>Points Over Time</h3>
+            <div class="chart-container">
+                <canvas id="pointsOverTimeChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Written by Windsurf
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab and content
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Initialize charts for the active tab
+                    initializeCharts(tabId);
+                });
+            });
+            
+            // Initialize charts for the default active tab
+            initializeCharts('player-stats');
+            
+            function initializeCharts(tabId) {
+                if (tabId === 'player-stats') {
+                    initPlayerWinRateChart();
+                } else if (tabId === 'match-analytics') {
+                    initDayFrequencyChart();
+                    initMatchTypeChart();
+                } else if (tabId === 'team-dynamics') {
+                    initTeamWinRateChart();
+                } else if (tabId === 'doubles-serving') {
+                    // Chart removed
+                } else if (tabId === 'score-patterns') {
+                    initScoreDistributionChart();
+                } else if (tabId === 'temporal-analysis') {
+                    initMatchesOverTimeChart();
+                    initPointsOverTimeChart();
+                } else if (tabId === 'elo-ratings') {
+                    const mode = getActiveEloMode();
+                    initEloChart(mode);
+                }
+            }
+            
+            function initPlayerWinRateChart() {
+                const ctx = document.getElementById('playerWinRateChart').getContext('2d');
+                
+                // Extract player data from the template
+                const playerStatsData = JSON.parse('{{ stats.player_stats|tojson|safe }}');
+                const players = Object.keys(playerStatsData);
+                const winRates = players.map(player => playerStatsData[player].win_percentage);
+                const totalMatches = players.map(player => playerStatsData[player].total_played);
+                
+                // Sort by win rate
+                const combined = players.map((player, i) => {
+                    return {
+                        player: player,
+                        winRate: winRates[i],
+                        matches: totalMatches[i]
+                    };
+                }).sort((a, b) => b.winRate - a.winRate);
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: combined.map(item => item.player),
+                        datasets: [{
+                            label: 'Win Rate (%)',
+                            data: combined.map(item => item.winRate),
+                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Win Rate (%)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Player Win Rates'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    afterLabel: function(context) {
+                                        const playerIndex = context.dataIndex;
+                                        return `Matches played: ${combined[playerIndex].matches}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initEloChart(mode) {
+                const canvas = document.getElementById('eloChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const eloAll = JSON.parse('{{ stats.elo|tojson|safe }}');
+                const pack = eloAll[mode] || { current_ratings: {}, history: {} };
+                const current = pack.current_ratings || {};
+                const history = pack.history || {};
+                // Pick top 10 players by current rating
+                const topPlayers = Object.keys(current)
+                    .sort((a, b) => (current[b] || 0) - (current[a] || 0))
+                    .slice(0, 10);
+                const colors = [
+                    '#e74c3c','#3498db','#2ecc71','#9b59b6','#f1c40f',
+                    '#e67e22','#1abc9c','#34495e','#7f8c8d','#8e44ad'
+                ];
+                const datasets = topPlayers.map((p, i) => {
+                    const points = (history[p] || []).map(d => ({ x: d.date, y: d.rating }));
+                    return {
+                        label: p,
+                        data: points,
+                        borderColor: colors[i % colors.length],
+                        backgroundColor: colors[i % colors.length],
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        hitRadius: 4,
+                        hoverRadius: 4,
+                        fill: false,
+                        tension: 0.1,
+                        spanGaps: true
+                    };
+                });
+                if (window._eloChart) {
+                    window._eloChart.destroy();
+                }
+                window._eloChart = new Chart(ctx, {
+                    type: 'line',
+                    data: { datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: { point: { radius: 3 } },
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: { unit: 'day' },
+                                title: { display: true, text: 'Date' }
+                            },
+                            y: {
+                                title: { display: true, text: 'Elo' }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `Elo Over Time (Top 10 by Current Rating) — ${mode.charAt(0).toUpperCase()+mode.slice(1)}`
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const v = context.parsed.y;
+                                        return `${context.dataset.label}: ${v}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function getActiveEloMode() {
+                const btn = document.querySelector('#elo-ratings .elo-mode-btn.active');
+                return btn ? btn.getAttribute('data-mode') : 'overall';
+            }
+
+            // Elo mode buttons behavior: switch tables and update chart
+            document.querySelectorAll('#elo-ratings .elo-mode-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Active state
+                    document.querySelectorAll('#elo-ratings .elo-mode-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const mode = this.getAttribute('data-mode');
+                    // Show corresponding table
+                    ['overall','singles','doubles'].forEach(m => {
+                        const tbl = document.getElementById(`eloTable-${m}`);
+                        if (tbl) tbl.style.display = (m === mode) ? '' : 'none';
+                    });
+                    // Update chart
+                    initEloChart(mode);
+                });
+            });
+            
+            function initDayFrequencyChart() {
+                const ctx = document.getElementById('dayFrequencyChart').getContext('2d');
+                
+                // Extract day frequency data
+                const dayFrequency = JSON.parse('{{ stats.match_analytics.day_frequency|tojson|safe }}');
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                const dayCounts = days.map(day => dayFrequency[day] || 0);
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: days,
+                        datasets: [{
+                            label: 'Number of Matches',
+                            data: dayCounts,
+                            backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Matches'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Match Frequency by Day of Week'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initMatchTypeChart() {
+                const ctx = document.getElementById('matchTypeChart').getContext('2d');
+                
+                // Extract match type data
+                const singles = parseInt('{{ stats.match_analytics.singles_matches }}');
+                const doubles = parseInt('{{ stats.match_analytics.doubles_matches }}');
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Singles', 'Doubles'],
+                        datasets: [{
+                            data: [singles, doubles],
+                            backgroundColor: [
+                                'rgba(52, 152, 219, 0.7)',
+                                'rgba(155, 89, 182, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(52, 152, 219, 1)',
+                                'rgba(155, 89, 182, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Singles vs Doubles Matches'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initTeamWinRateChart() {
+                const ctx = document.getElementById('teamWinRateChart').getContext('2d');
+                
+                // Extract team data
+                const teamDynamics = JSON.parse('{{ stats.team_dynamics|tojson|safe }}');
+                const teams = Object.keys(teamDynamics)
+                    .filter(team => teamDynamics[team].played >= 2) // Only teams with at least 2 matches
+                    .map(team => {
+                        return {
+                            name: team.replace(/[(),']/g, '').replace(/\s+/g, ' & '),
+                            winRate: teamDynamics[team].win_rate,
+                            played: teamDynamics[team].played
+                        };
+                    })
+                    .sort((a, b) => b.winRate - a.winRate)
+                    .slice(0, 10); // Top 10 teams
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: teams.map(team => team.name),
+                        datasets: [{
+                            label: 'Win Rate (%)',
+                            data: teams.map(team => team.winRate),
+                            backgroundColor: 'rgba(155, 89, 182, 0.7)',
+                            borderColor: 'rgba(155, 89, 182, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Win Rate (%)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Team Win Rates (min. 2 matches)'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    afterLabel: function(context) {
+                                        const teamIndex = context.dataIndex;
+                                        return `Matches played: ${teams[teamIndex].played}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initScoreDistributionChart() {
+                const ctx = document.getElementById('scoreDistributionChart').getContext('2d');
+                
+                // Extract score distribution data
+                const scoreDistribution = JSON.parse('{{ stats.score_patterns.score_distribution|tojson|safe }}');
+                const scores = Object.keys(scoreDistribution).sort((a, b) => parseInt(a) - parseInt(b));
+                const scoreCounts = scores.map(score => scoreDistribution[score]);
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: scores,
+                        datasets: [{
+                            label: 'Frequency',
+                            data: scoreCounts,
+                            backgroundColor: 'rgba(230, 126, 34, 0.7)',
+                            borderColor: 'rgba(230, 126, 34, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Frequency'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Score'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Score Distribution'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initMatchesOverTimeChart() {
+                const ctx = document.getElementById('matchesOverTimeChart').getContext('2d');
+                
+                // Extract time series data
+                const timeSeries = JSON.parse('{{ stats.temporal_analysis.time_series|tojson|safe }}');
+                const dates = timeSeries.dates;
+                const matchCounts = timeSeries.match_counts;
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Number of Matches',
+                            data: matchCounts,
+                            backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Matches'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Matches Over Time'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initPointsOverTimeChart() {
+                const ctx = document.getElementById('pointsOverTimeChart').getContext('2d');
+                
+                // Extract time series data
+                const timeSeriesData = JSON.parse('{{ stats.temporal_analysis.time_series|tojson|safe }}');
+                const dateLabels = timeSeriesData.dates;
+                const pointCounts = timeSeriesData.point_counts;
+                
+                // Create chart
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dateLabels,
+                        datasets: [{
+                            label: 'Total Points',
+                            data: pointCounts,
+                            backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Total Points'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Points Over Time'
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
+    </script>
+    
+    <!-- Match Details Modal -->
+    <div id="matchDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalTitle">Match Details</h2>
+            <div id="modalContent" class="match-list">
+                <!-- Match details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Match details modal functionality
+        const modal = document.getElementById('matchDetailsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // Close modal when clicking the × button
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // Function to show match details
+        function showMatchDetails(type, id, name) {
+            // Set modal title based on the type
+            if (type === 'player') {
+                modalTitle.textContent = `Matches for ${name}`;
+            } else if (type === 'server_receiver') {
+                const [server, receiver] = name.split('>');
+                modalTitle.textContent = `Matches where ${server} serves to ${receiver}`;
+            } else if (type === 'team') {
+                modalTitle.textContent = `Matches for Team: ${name}`;
+            } else if (type === 'headtohead') {
+                const [left, right] = name.split('>');
+                modalTitle.textContent = `Head-to-Head: ${left} vs ${right}`;
+            }
+            
+            // Clear previous content
+            modalContent.innerHTML = '<p>Loading matches...</p>';
+            
+            // Show the modal
+            modal.style.display = 'block';
+            
+            // Fetch match details
+            fetch(`/get_match_details?type=${type}&id=${encodeURIComponent(id)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.matches && data.matches.length > 0) {
+                        let html = '';
+                        data.matches.forEach(match => {
+                            html += `<div class="match-item">`;
+                            html += `<div class="match-date">${match.date}</div>`;
+                            
+                            if (match.type === 'singles') {
+                                // For singles, ensure the subject player is always on the left
+                                let leftPlayer, rightPlayer, leftScore, rightScore, leftClass, rightClass;
+                                
+                                if (type === 'player' && match.player1 === name) {
+                                    // Subject player is player1, keep original order
+                                    leftPlayer = match.player1;
+                                    rightPlayer = match.player2;
+                                    leftScore = match.score.player1;
+                                    rightScore = match.score.player2;
+                                    leftClass = match.winner === 'player1' ? 'winner' : 'loser';
+                                    rightClass = match.winner === 'player2' ? 'winner' : 'loser';
+                                } else if (type === 'player' && match.player2 === name) {
+                                    // Subject player is player2, swap order
+                                    leftPlayer = match.player2;
+                                    rightPlayer = match.player1;
+                                    leftScore = match.score.player2;
+                                    rightScore = match.score.player1;
+                                    leftClass = match.winner === 'player2' ? 'winner' : 'loser';
+                                    rightClass = match.winner === 'player1' ? 'winner' : 'loser';
+                                } else {
+                                    // Not a player-specific view, keep original order
+                                    leftPlayer = match.player1;
+                                    rightPlayer = match.player2;
+                                    leftScore = match.score.player1;
+                                    rightScore = match.score.player2;
+                                    leftClass = match.winner === 'player1' ? 'winner' : 'loser';
+                                    rightClass = match.winner === 'player2' ? 'winner' : 'loser';
+                                }
+                                
+                                html += `<div class="match-players">
+                                    <span class="${leftClass}">${leftPlayer}</span> vs 
+                                    <span class="${rightClass}">${rightPlayer}</span>
+                                </div>`;
+                                html += `<div class=\"match-score\">${leftScore}-${rightScore}</div>`;
+                                // Singles expected probabilities (p1/p2)
+                                if (match.expected && match.expected.p1 !== undefined && match.expected.p2 !== undefined) {
+                                    let leftExp = match.expected.p1;
+                                    let rightExp = match.expected.p2;
+                                    // If viewing by player and the subject is player2, swap to align with left/right
+                                    if (type === 'player' && match.player2 === name) {
+                                        leftExp = match.expected.p2;
+                                        rightExp = match.expected.p1;
+                                    }
+                                    html += `<div class=\"match-expected\">Expected: ${leftExp}% - ${rightExp}%</div>`;
+                                }
+                            } else { // doubles
+                                // For doubles, ensure the subject player's team is always on the left
+                                let leftTeam, rightTeam, leftScore, rightScore, leftClass, rightClass;
+                                
+                                if (type === 'player') {
+                                    // Check if subject player is in team1
+                                    const subjectInTeam1 = (match.team1.server === name || match.team1.partner === name);
+                                    
+                                    if (subjectInTeam1) {
+                                        // Subject player is in team1, keep original order
+                                        leftTeam = `${match.team1.server} & ${match.team1.partner}`;
+                                        rightTeam = `${match.team2.receiver} & ${match.team2.partner}`;
+                                        leftScore = match.score.team1;
+                                        rightScore = match.score.team2;
+                                        leftClass = match.winner === 'team1' ? 'winner' : 'loser';
+                                        rightClass = match.winner === 'team2' ? 'winner' : 'loser';
+                                    } else {
+                                        // Subject player is in team2, swap order
+                                        leftTeam = `${match.team2.receiver} & ${match.team2.partner}`;
+                                        rightTeam = `${match.team1.server} & ${match.team1.partner}`;
+                                        leftScore = match.score.team2;
+                                        rightScore = match.score.team1;
+                                        leftClass = match.winner === 'team2' ? 'winner' : 'loser';
+                                        rightClass = match.winner === 'team1' ? 'winner' : 'loser';
+                                    }
+                                } else {
+                                    // Not a player-specific view, keep original order
+                                    leftTeam = `${match.team1.server} & ${match.team1.partner}`;
+                                    rightTeam = `${match.team2.receiver} & ${match.team2.partner}`;
+                                    leftScore = match.score.team1;
+                                    rightScore = match.score.team2;
+                                    leftClass = match.winner === 'team1' ? 'winner' : 'loser';
+                                    rightClass = match.winner === 'team2' ? 'winner' : 'loser';
+                                }
+                                
+                                html += `<div class="match-players">
+                                    <span class="${leftClass}">${leftTeam}</span> vs 
+                                    <span class="${rightClass}">${rightTeam}</span>
+                                </div>`;
+                                html += `<div class=\"match-score\">${leftScore}-${rightScore}</div>`;
+                                if (match.expected && match.expected.team1 !== undefined && match.expected.team2 !== undefined) {
+                                    let leftExp = match.expected.team1;
+                                    let rightExp = match.expected.team2;
+                                    if (type === 'player') {
+                                        const subjectInTeam1 = (match.team1.server === name || match.team1.partner === name);
+                                        if (!subjectInTeam1) {
+                                            leftExp = match.expected.team2;
+                                            rightExp = match.expected.team1;
+                                        }
+                                    }
+                                    html += `<div class=\"match-expected\">Expected: ${leftExp}% - ${rightExp}%</div>`;
+                                }
+                            }
+                            
+                            html += `</div>`;
+                        });
+                        modalContent.innerHTML = html;
+                    } else {
+                        modalContent.innerHTML = '<p>No matches found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching match details:', error);
+                    modalContent.innerHTML = '<p>Error loading matches. Please try again.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
