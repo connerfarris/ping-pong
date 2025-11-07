@@ -1,0 +1,2679 @@
+[
+  {
+    "date": "2025-09-03",
+    "matches": [
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 22,
+          "team2": 20
+        },
+        "id": "1d0c2363-6a83-40e0-94ae-9054bf27c0c6"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "id": "aca73632-aa47-4469-8c3f-ea570602e300"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "id": "8886d34a-466f-4e1c-8c6a-a52c696158f7"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 15
+        },
+        "id": "0d509d76-c4ee-4cd2-86ee-66186aee0d92"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "id": "0c2f995a-0d3e-47c7-85e0-cb43591fcf70"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 11
+        },
+        "id": "910565da-ad90-4d93-ba0d-24c7d79d6fb4"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-08",
+    "matches": [
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 19,
+          "team2": 21
+        },
+        "id": "6395b810-098f-45d1-a592-57a976f0040a"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 19,
+          "team2": 21
+        },
+        "id": "0a67ff64-df29-4d01-b222-e02704c8c737"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 11
+        },
+        "id": "69be5ebb-5659-4c61-a607-b7f25f087210"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 19
+        },
+        "id": "0962f14f-ad85-4e62-ab42-75ab594971cf"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "id": "d37bf730-bb6a-448a-969b-4d4365565081"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-10",
+    "matches": [
+      {
+        "id": "78a9149c-2356-4cf3-9845-2e2385b5bbcf",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "799bceb0-b895-45fa-aaec-e2ca1d4c472f",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 10
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "1d54c736-c397-4c1d-8847-41a505ea2aef",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 13
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "16d52466-199c-427a-94da-cb18616e5838",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "21921ed0-598f-4f0f-b3b9-3a1b638e198d",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "199d19ad-50b9-4dbe-a49b-804dceb3e5ae",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "52579cac-6931-4e25-8d3b-45f21ced94fe",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "4c5599c6-086a-449f-83b3-d7a6ea549c90",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "7b9948ac-e1ca-4704-b789-cb28439f3968",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-11",
+    "matches": [
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 30
+        },
+        "result_type": "score",
+        "id": "bdeb7ee4-7b58-40d9-ab17-cd4086c0ea48"
+      },
+      {
+        "type": "singles",
+        "player1": "Carson",
+        "player2": "Conner",
+        "score": {
+          "player1": 21,
+          "player2": 18
+        },
+        "result_type": "score",
+        "id": "3fd20fb7-096c-413d-90be-6e7761f50860"
+      },
+      {
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Carson",
+        "score": {
+          "player1": 19,
+          "player2": 21
+        },
+        "result_type": "score",
+        "id": "a46c1421-4234-4b43-b47b-ac659b52a589"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "result_type": "score",
+        "id": "f1901cb9-dd64-4463-b8fd-2abc3465fb80"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Prasidh",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score",
+        "id": "97cc9c33-dc17-49f5-b962-5eb9d706f398"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Prasidh"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 15
+        },
+        "result_type": "score",
+        "id": "07baa0f4-521a-419d-b0e5-228548b5cb7d"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Prasidh"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 10,
+          "team2": 21
+        },
+        "result_type": "score",
+        "id": "e43b34c1-d573-4954-b999-1f81b834eedc"
+      },
+      {
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Prasidh",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score",
+        "id": "d3b3d936-a61a-41d8-a0e9-8265f2af7b08"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-15",
+    "matches": [
+      {
+        "id": "f57b0774-c5f3-4060-a39c-b26d474569a8",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0b34c222-e066-46d1-a824-679becd0c111",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "ad63833c-d9e7-4544-bae9-b32620e7325e",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 22,
+          "team2": 20
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "6a161f06-249b-4b73-9c57-51f6b598ef53",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 12
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b71349fb-cf87-4cf1-8d70-c4f6a56846c2",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "33878b24-89b8-4e39-8522-c78b1556857f",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 17,
+          "team2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-16",
+    "matches": [
+      {
+        "id": "63c7ed5f-53df-481b-88b7-e8dae99e453d",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 19
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0ae2725a-6a3d-4880-9376-5a59832bf688",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 18,
+          "player2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "f3a9972f-c3ad-469e-b055-5786d9518afc",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "aeab6470-4993-47fe-abb6-61eca800f3e5",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 13
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-17",
+    "matches": [
+      {
+        "id": "2b74314a-848e-47c2-9ccc-8940e5dfff4e",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 19
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "55c23e66-a27c-4481-b56e-34e4ccc01675",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 9,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "06041acf-3b78-473f-9fe9-8b6a4fcfcaab",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-18",
+    "matches": [
+      {
+        "id": "1a074bab-6aac-4362-814c-350c079f5167",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Prasidh"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 10,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "38b4aa6b-1187-4942-978d-402c035947bf",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Prasidh"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 25
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "d6fba245-ca30-47ba-be01-7d8885531ebc",
+        "type": "doubles",
+        "team1": {
+          "server": "Prasidh",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 19,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "6288592e-d6eb-474e-a940-d40971b9b4f7",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "4d0edf43-2523-46da-994c-87bf75068c42",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "64a8c44e-8089-4fc8-b7a6-9b9810b49a4a",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "018641db-e9b9-451b-86c1-f00ede2bfcc7",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 1,
+          "player2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-22",
+    "matches": [
+      {
+        "id": "27a8afce-32c0-4a26-ab11-dce0e28a444c",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 10,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "39de65cf-a4c0-4fe5-be4f-c982edec9dbf",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-23",
+    "matches": [
+      {
+        "id": "902d9584-2017-4515-a81b-fcdc577f00e4",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7511f6e1-7cb0-4f3f-8365-66a7a9dbd46d",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 15,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "cfeecb28-319f-41ff-957b-1cad90443a1d",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 19
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "34f6588b-db66-4543-836e-3135ac8c3fd5",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "bc7cca83-e8d9-4c68-98e2-75af11ec58fe",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 17,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "1cd3ffe5-72b0-4aee-9346-f42442ef17e1",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b938875d-054a-4ec9-94c0-16c6e629d076",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 13,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "659a5fad-901e-4ef8-b5c1-600218b22baa",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "4e3a0e5f-f7dd-4be8-9f0d-48a6f5f76ab4",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 19
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "6f624380-8fc6-4101-a20e-201be2aa82d7",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-24",
+    "matches": [
+      {
+        "id": "ea3b0fb2-9e31-4cf6-bb5a-326ee0cbbc31",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "3ad9c321-23b4-4f27-a878-6ae2ea080ccc",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "702614bf-055d-48b0-984f-cfdad01bb204",
+        "type": "doubles",
+        "team1": {
+          "server": "Ridzky",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-01",
+    "matches": [
+      {
+        "id": "a960d5dc-e770-4187-9527-3d75f0671a2e",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "46a6038b-3c02-4a7f-add8-1ba5cea11bbd",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 14,
+          "player2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "3a8318d5-17e8-4c5c-a234-a8290a5b0243",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 11
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-30",
+    "matches": [
+      {
+        "id": "7ac5cfb3-141d-40da-a775-d87ebea0c593",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e7dc5270-a1e0-4d0c-bc44-62448334856b",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 23,
+          "player2": 25
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "50df946c-122f-4aa8-a398-0a41720c4d46",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "73cc3b58-8882-45fd-9e50-7f32222adf71",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 19
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-02",
+    "matches": [
+      {
+        "id": "d6c30fa1-20fa-46fa-a57d-8d6f1cfde4f1",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "5506eb22-fdc4-4177-9ace-8dfec04a28e0",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "c68cd1f0-ba9d-4e92-ab9d-b45db017debc",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 23,
+          "team2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-07",
+    "matches": [
+      {
+        "id": "f3baa40e-7a36-447c-b22c-c9f6dab9b9d8",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "393dda07-ea70-4016-b033-2e3722d7a250",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "511a60ea-ab06-43df-8967-92d693826c4b",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0131121d-69ff-4e6e-88e9-d6d143298dba",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 13,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b0a8d31b-f339-417a-8f59-251db51f2dfe",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "2b39e4b2-b7b6-42e7-bb59-45a23014fd8e",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 3,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "745a1f70-efd3-493b-8f08-e2a40fa9a5ed",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 5,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0b5bdd34-25e2-42fe-a373-92e995c01f0f",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 5,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "4f119f4f-d61d-4254-97d2-ecd896c65f44",
+        "type": "singles",
+        "player1": "Conner",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 18,
+          "player2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "74a9a970-a2ac-4c57-b610-dd0fcfe0f58a",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "db5b12f6-f957-4696-8692-bac22f0513dc",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "11ed0821-74e6-4d6f-abdd-e653d10fd1bd",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 8,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "88d503f2-29be-4d21-a122-4579ddc8609c",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 8
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "823c1203-1d38-4fe6-b1ad-64195afa3040",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 8
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-08",
+    "matches": [
+      {
+        "id": "a77a15f4-9b61-4e49-890a-a1cd7881aa8b",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 21,
+          "player2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "2318e52e-4eab-4456-a591-294ed8fd7cfd",
+        "type": "singles",
+        "player1": "Carson",
+        "player2": "Prasidh",
+        "score": {
+          "player1": 21,
+          "player2": 15
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7eada01c-256f-4024-81ad-3ccd737d3ce8",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 20,
+          "player2": 22
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "fec7eff9-ec98-41da-aabf-39bc76f4ee1d",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 4,
+          "player2": 11
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-09",
+    "matches": [
+      {
+        "id": "95221521-86c0-46d3-b558-2b55d2290841",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 6
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "3d7211f9-150d-4e37-9344-5bd4d4d2c5e9",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 6
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "a4fe1cd1-1fe4-4cb4-8bf0-a1cfb510f46b",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e1d4c882-4211-4fd5-9eab-db3905777bfe",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "843192bc-4788-4eac-bb5a-a1edb1392525",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 9,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "f2c36865-095b-4b5f-9172-c8965fcc9894",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 9,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "df96653f-afe1-488f-b28e-6f1880c6e072",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 5
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "be624701-6f74-4d1c-9fc7-01170dc14233",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-13",
+    "matches": [
+      {
+        "id": "2dc50686-ce4a-48c1-8637-7b02dc673067",
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e7afe80f-83d3-4f30-aaea-94a3ceb140b4",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 19
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "07260cbc-9e33-4bae-8fe7-977edad71246",
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Conner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 16,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "fe3136fc-f6d9-4572-8c4e-9b2868d0de87",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 12
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "25d4c0f8-700a-4726-a627-dc70824a686e",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 14,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "907128b7-7e90-4458-a55f-b421643d5cdc",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b209ef6f-31c0-418a-8bb4-facb8d44074a",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 18,
+          "team2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-20",
+    "matches": [
+      {
+        "id": "f291e238-479a-437a-96b6-fcf7c42ae9eb",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 6
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b7b74cd0-850e-49a7-b31d-2e7f66a778c0",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 5,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e238cd92-2c72-44ba-a6d9-025b2d473f7d",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 13,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7a6b100e-c148-4abf-a78a-ac60b0fadf24",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 6
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "93f65779-f1ec-47ff-af29-6d995b0a5394",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 5
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "9f2a902c-da4f-4074-b65b-d854b06b5286",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 21,
+          "player2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "641706c8-84f8-4730-b6e1-e71fec7fd169",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Conner"
+        },
+        "score": {
+          "team1": 24,
+          "team2": 22
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "c046b96e-3e8d-4baa-acbc-a5a121eeaf2e",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 24,
+          "team2": 22
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "a931d7e2-ca1a-4295-8c42-318214726848",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 20,
+          "team2": 22
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7e1032a4-cb8d-4653-b72b-52273cdab9f1",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "cb10a290-7015-4a4e-ab79-65b1ecbc2d0c",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 15
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "47a8dc86-46d9-4b38-bb38-f4acc3181ce3",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 11,
+          "team2": 2
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "76cc7eb1-5201-4ebf-aead-96de4aba92b8",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 5
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b3d99daf-3abe-426b-a47d-661fe2d0b40d",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "be8379fa-8eec-41be-b25d-ef4489a0c268",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "627289f6-ade8-4a5f-8e31-c3c9d7c1ae9e",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "5b791d4e-6482-4e8e-8dd1-f86d5756506a",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 12,
+          "player2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "aa18edea-3465-4c6a-926a-120e63611a54",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e70b7236-2098-4ab6-8998-6293b44f7d0d",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "2a8bb782-0142-4904-a271-25c576258fd2",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 6
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-22",
+    "matches": [
+      {
+        "id": "504078fc-e1d2-4a70-a26d-514dac5d2513",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 4
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "77e0d4ea-6534-49c0-86e3-99576e176829",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 7
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "dd657f60-c7c5-4f60-b87f-46df9cda7604",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 3,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "2afcdc71-f801-4e2f-bd15-f07876ae9c4f",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "5531ebff-680c-494b-908a-65bb10cc4a58",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Conner",
+        "score": {
+          "player1": 5,
+          "player2": 11
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-27",
+    "matches": [
+      {
+        "id": "0c76fad1-1978-43f5-82ce-52668030c349",
+        "type": "doubles",
+        "team1": {
+          "server": "Prasidh",
+          "partner": "Dhruval"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 15
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "f64d8aa9-8cc4-43c8-a571-66602e6a4cbd",
+        "type": "doubles",
+        "team1": {
+          "server": "Prasidh",
+          "partner": "Dhruval"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "1f572d59-97b1-4022-8f79-b967d8ecb4ca",
+        "type": "doubles",
+        "team1": {
+          "server": "Prasidh",
+          "partner": "Dhruval"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0abdb0e1-f05e-4d3a-9f6c-b2980f4db7f5",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 8
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "d87e4ec5-6b2d-452f-91ab-67ce9e0a2498",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 7,
+          "player2": 11
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7525da88-84f0-4cdd-8455-9600e6b40393",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 8
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "e27fdd30-b0dd-444b-894d-e7342a8826a4",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 10,
+          "player2": 12
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "8b635e89-d150-4096-9958-0df0e68ee46c",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 11,
+          "player2": 8
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "61895434-cb66-47ed-a6c2-05008902bbbc",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Carson",
+        "score": {
+          "player1": 19,
+          "player2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-28",
+    "matches": [
+      {
+        "id": "98ebb970-4fad-4c19-9256-8c1f3d573e39",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 12
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "48f8186f-8f06-4c10-bd0f-21f7e047d320",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 14
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "679a551e-63d6-4be2-bcb5-a8ac553120bf",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 11,
+          "team2": 7
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-29",
+    "matches": [
+      {
+        "id": "5cf4d39b-bca0-4163-8679-3279bee9f466",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 13
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "b98471d2-5800-4ac9-a31c-a229c2be5a30",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 17
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-30",
+    "matches": [
+      {
+        "id": "8748687c-8781-4f3d-9fee-4019f14ad358",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 15
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "7f8c893e-a072-4a0c-8b1d-dbead651ceac",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 23
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "76351e06-d12e-4f6c-8b79-041092d5d06d",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "70680657-ba84-468e-ba1d-2b43b49063bf",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Phil Armstrong",
+          "partner": "Trevor Woodhouse"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-04",
+    "matches": [
+      {
+        "id": "974ab4e9-f732-4ca7-8553-16748973360a",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "a5ebd0d1-22b6-41a3-99f7-03f7fc02c525",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "6c27a8fa-d970-4cfb-abc1-83d61091d78c",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "f14937bf-4914-41ef-9e9e-82edc5d61a17",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "fb468c14-68fe-4375-8554-8190bb95dc27",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "0dc61160-f3cd-40f0-a04d-30b219f8a32f",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "4eb6c74f-a74b-4d42-9ae9-e7ef171c1aef",
+        "type": "doubles",
+        "team1": {
+          "server": "Carson",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "43c268c7-2b32-4063-b997-84d16422b827",
+        "type": "doubles",
+        "team1": {
+          "server": "Ryan",
+          "partner": "Conner"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "74fb1af0-a871-4555-a3eb-06c113f5da68",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 24,
+          "team2": 26
+        },
+        "result_type": "score"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-05",
+    "matches": [
+      {
+        "id": "06854720-2500-4cc6-8c07-3b7cbf6ad779",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Tanner"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 17,
+          "team2": 21
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "af68f787-1d79-4cb0-a2f0-599e85654bc2",
+        "type": "doubles",
+        "team1": {
+          "server": "Monte",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Tanner",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "d2091766-5dc0-469e-9d13-3b635b950f12",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Monte"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 0,
+          "team2": 1
+        },
+        "result_type": "winloss",
+        "result_value": "L"
+      },
+      {
+        "id": "e5dd6794-0c0f-437a-8b05-62fd24ecb000",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ridzky"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 0,
+          "team2": 1
+        },
+        "result_type": "winloss",
+        "result_value": "L"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-06",
+    "matches": [
+      {
+        "id": "8c195f25-8f37-4b2c-92f0-ef07b7cc5102",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Ridzky",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 18
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "1e3f8e1d-5447-4d13-88e1-ae75e82f7a6e",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Tanner"
+        },
+        "score": {
+          "team1": 22,
+          "team2": 24
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "3351d67b-0e73-414f-8486-5a9de2137cea",
+        "type": "doubles",
+        "team1": {
+          "server": "Tanner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Ridzky"
+        },
+        "score": {
+          "team1": 21,
+          "team2": 13
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "206b2519-d7f2-433f-946b-4c910af6b492",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Prasidh"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "1fbaa01b-38d8-457d-97c9-5bf99af91200",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Prasidh"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "25396d92-54b5-46eb-ac25-2c88aea135c2",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Carson",
+          "partner": "Prasidh"
+        },
+        "score": {
+          "team1": 0,
+          "team2": 1
+        },
+        "result_type": "winloss",
+        "result_value": "L"
+      },
+      {
+        "id": "35903da9-bcd8-44e6-bb7d-034e7ee188bb",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Ryan"
+        },
+        "team2": {
+          "receiver": "Prasidh",
+          "partner": "Carson"
+        },
+        "score": {
+          "team1": 0,
+          "team2": 1
+        },
+        "result_type": "winloss",
+        "result_value": "L"
+      },
+      {
+        "id": "61dfff45-0d0c-4c1e-a564-d722e16851af",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Prasidh",
+          "partner": "Ryan"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "c1821cad-e008-4413-89cf-e6a15c91817c",
+        "type": "doubles",
+        "team1": {
+          "server": "Conner",
+          "partner": "Carson"
+        },
+        "team2": {
+          "receiver": "Ryan",
+          "partner": "Prasidh"
+        },
+        "score": {
+          "team1": 1,
+          "team2": 0
+        },
+        "result_type": "winloss",
+        "result_value": "W"
+      },
+      {
+        "id": "02bb5649-6493-4fd0-8b10-3dd9f67a2637",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Dhruval",
+        "score": {
+          "player1": 18,
+          "player2": 16
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "dede171b-ab31-478b-bdb8-4149b566e868",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Dhruval",
+        "score": {
+          "player1": 11,
+          "player2": 4
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "0b572b5f-49f3-4ed0-983a-b7bfef342a82",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Dhruval",
+        "score": {
+          "player1": 11,
+          "player2": 9
+        },
+        "result_type": "score"
+      },
+      {
+        "id": "27f99c5e-6d47-461f-89c5-0c75aa1fa1d7",
+        "type": "singles",
+        "player1": "Prasidh",
+        "player2": "Dhruval",
+        "score": {
+          "player1": 16,
+          "player2": 21
+        },
+        "result_type": "score"
+      }
+    ]
+  }
+]
