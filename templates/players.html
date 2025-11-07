@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Player Management</title>
+    <style>
+        /* Written by Windsurf */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .flash {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash.error {
+            background-color: #ffcccc;
+            border-color: #ff0000;
+        }
+        .flash.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .player-list {
+            margin-top: 30px;
+        }
+        .player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .player-item:last-child {
+            border-bottom: none;
+        }
+        .player-name {
+            font-size: 16px;
+        }
+        .player-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .nav-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .nav-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-button-container">
+            <a href="{{ url_for('index') }}">
+                <button type="button" class="nav-button">Back to Matches</button>
+            </a>
+        </div>
+        <h1>Player Management</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form action="{{ url_for('add_player') }}" method="post">
+            <div class="form-group">
+                <label for="player_name">Add New Player:</label>
+                <input type="text" id="player_name" name="player_name" required>
+            </div>
+            <button type="submit">Add Player</button>
+        </form>
+        
+        <div class="player-list">
+            <h2>Current Players</h2>
+            {% if players %}
+                {% for player in players %}
+                    <div class="player-item">
+                        <span class="player-name">{{ player }}</span>
+                        <div class="player-actions">
+                            <form action="{{ url_for('delete_player') }}" method="post" onsubmit="return confirm('Are you sure you want to delete this player?');">
+                                <input type="hidden" name="player_name" value="{{ player }}">
+                                <button type="submit" class="danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No players found.</p>
+            {% endif %}
+        </div>
+        
+        <div class="button-group">
+            <a href="{{ url_for('statistics') }}"><button type="button" class="secondary">View Statistics</button></a>
+        </div>
+    </div>
+</body>
+</html>
