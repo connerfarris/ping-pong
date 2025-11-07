@@ -4,7 +4,8 @@ import json
 import os
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, Response
 
 # Import statistics calculator
 from stats_calculator import get_all_statistics, get_match_expected_map
@@ -53,7 +54,27 @@ def save_players(players):
         return False
 
 app = Flask(__name__)
-app.secret_key = "ping-pong-tracker-secret-key"
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', "ping-pong-tracker-secret-key")
+
+# Authentication configuration
+USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
+PASSWORD = os.environ.get('ADMIN_PASSWORD', 'changeme123')
+
+def check_auth(username, password):
+    """Check if a username/password combination is valid."""
+    return username == USERNAME and password == PASSWORD
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return Response(
+                'Could not verify your access level for that URL.\n'
+                'You have to login with proper credentials', 401,
+                {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        return f(*args, **kwargs)
+    return decorated
 
 def quote_name(name):
     """Written by Windsurf
@@ -69,6 +90,7 @@ def quote_name(name):
     return s
 
 @app.route('/')
+@requires_auth
 def index():
     """Written by Windsurf"""
     # Always use today's date
@@ -120,7 +142,8 @@ def index():
     
     return render_template('index.html', date=date, match_text=match_text)
 
-@app.route('/parse', methods=['POST'])
+@app.route('/parse', methods=['GET', 'POST'])
+@requires_auth
 def parse():
     """Written by Windsurf"""
     date = request.form.get('date', '').strip()
@@ -308,6 +331,7 @@ def convert_json_to_match_text(date_data):
     return '\n'.join(match_lines)
 
 @app.route('/statistics')
+@requires_auth
 def statistics():
     """Written by Windsurf
     Display statistics page with various ping pong statistics
@@ -321,6 +345,7 @@ def statistics():
         return redirect(url_for('index'))
 
 @app.route('/players')
+@requires_auth
 def players():
     """Written by Windsurf
     Display player management page
@@ -334,6 +359,7 @@ def players():
         return redirect(url_for('index'))
 
 @app.route('/add_player', methods=['POST'])
+@requires_auth
 def add_player():
     """Written by Windsurf
     Add a new player
@@ -367,12 +393,14 @@ def add_player():
         flash(f"An error occurred: {str(e)}", "error")
         return redirect(url_for('players'))
 
-@app.route('/delete_player', methods=['POST'])
+@app.route('/delete_player/<player_name>', methods=['POST'])
+@requires_auth
 def delete_player():
     """Written by Windsurf
     Delete a player
     """
     try:
+        player_name = player_name
         player_name = request.form.get('player_name', '').strip()
         if not player_name:
             flash("Player name cannot be empty", "error")
