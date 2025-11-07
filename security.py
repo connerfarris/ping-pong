@@ -1,8 +1,13 @@
 import time
+import logging
 from datetime import datetime, timedelta
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, session
 import threading
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # In-memory storage for failed attempts and blocked IPs
 # In production, consider using Redis or a database
@@ -110,6 +115,52 @@ def check_ip_block():
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
+def requires_auth(f):
+    @wraps(f)
+    @check_ip_block()  # Check if IP is blocked
+    # @auth_limiter  # Apply rate limiting to all auth attempts
+    @log_failed_attempt()  # Log failed attempts
+    def decorated(*args, **kwargs):
+        # Check session first
+        if session.get('authenticated'):
+            # Check if session is expired
+            if 'last_activity' in session:
+                last_activity = session['last_activity']
+                if (datetime.now() - last_activity).total_seconds() > 3600:  # 1 hour session timeout
+                    session.clear()
+                    logger.warning(f"Session expired for IP: {get_client_ip()}")
+                else:
+                    session['last_activity'] = datetime.now()
+                    return f(*args, **kwargs)
+        
+        # Basic auth fallback
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            client_ip = get_client_ip()
+            logger.warning(f"Failed login attempt from IP: {client_ip}")
+            return Response(
+                'Could not verify your access level for that URL.\n'
+                'You have to login with proper credentials', 401,
+                {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        
+        # Successful authentication
+        client_ip = get_client_ip()
+        logger.info(f"Successful login from IP: {client_ip}")
+        
+        # Reset failed attempts and set up session
+        reset_failed_attempts(client_ip)
+        session.clear()
+        session['authenticated'] = True
+        session['user_agent'] = request.headers.get('User-Agent')
+        session['ip_address'] = client_ip
+        session['last_activity'] = datetime.now()
+        
+        # Set session to expire after 1 hour of inactivity
+        session.permanent = True
+        
+        return f(*args, **kwargs)
+    return decorated
 
 def log_failed_attempt():
     """Decorator to log failed login attempts."""

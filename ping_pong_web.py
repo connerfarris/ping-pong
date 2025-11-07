@@ -57,7 +57,18 @@ def save_players(players):
         return False
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', "ping-pong-tracker-secret-key")
+
+# Session configuration
+app.config.update(
+    SECRET_KEY=os.environ.get('FLASK_SECRET_KEY', os.urandom(24).hex()),
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=1),  # Session expires after 1 hour
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True,  # Only send cookie over HTTPS
+    SESSION_COOKIE_SAMESITE='Lax',  # CSRF protection
+    REMEMBER_COOKIE_SECURE=True,
+    REMEMBER_COOKIE_HTTPONLY=True,
+    REMEMBER_COOKIE_DURATION=timedelta(hours=1)
+)
 
 # Initialize rate limiter
 limiter = Limiter(
@@ -760,23 +771,61 @@ def get_match(match_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+def configure_app(app):
+    # Trust first proxy (for when behind Cloudflare)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    
+    # Security headers middleware
+    @app.after_request
+    def add_security_headers(response):
+        # Prevent clickjacking
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        
+        # Enable XSS protection
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        
+        # Prevent MIME type sniffing
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        
+        # Content Security Policy
+        csp = """
+            default-src 'self';
+            script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+            img-src 'self' data: https:;
+            font-src 'self' https://fonts.gstatic.com;
+            connect-src 'self';
+            frame-ancestors 'self';
+            form-action 'self';
+            base-uri 'self';
+        """
+        response.headers['Content-Security-Policy'] = " ".join(csp.split())
+        
+        # HSTS (only enable in production with HTTPS)
+        if not app.debug:
+            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        
+        # Prevent caching of sensitive pages
+        if 'Cache-Control' not in response.headers:
+            response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        
+        return response
+
+    return app
+
 if __name__ == '__main__':
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    
     # Create templates directory if it doesn't exist
     script_dir = os.path.dirname(os.path.abspath(__file__))
     templates_dir = os.path.join(script_dir, "templates")
     os.makedirs(templates_dir, exist_ok=True)
     
+    # Configure the app
+    app = configure_app(app)
+    
     # Configure rate limit headers for debugging
     app.config['RATELIMIT_HEADERS_ENABLED'] = True
-    
-    # Security headers
-    @app.after_request
-    def add_security_headers(response):
-        response.headers['X-Content-Type-Options'] = 'nosniff'
-        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-        response.headers['X-XSS-Protection'] = '1; mode=block'
-        response.headers['Content-Security-Policy'] = "default-src 'self'"
-        return response
     
     # Use port 5000
     app.run(debug=True, port=5000, threaded=True)
