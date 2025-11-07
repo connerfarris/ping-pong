@@ -1,1 +1,1 @@
-web: gunicorn ping_pong_web:app
+web: gunicorn "ping_pong_web:app"
