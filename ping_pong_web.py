@@ -6,6 +6,8 @@ import re
 from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, Response
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Import statistics calculator
 from stats_calculator import get_all_statistics, get_match_expected_map
@@ -56,9 +58,24 @@ def save_players(players):
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', "ping-pong-tracker-secret-key")
 
+# Initialize rate limiter
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"  # For production, consider using Redis
+)
+
+# Stricter rate limiting for authentication attempts
+auth_limiter = limiter.shared_limit(
+    "5 per minute",
+    scope="auth",
+    error_message="Too many login attempts. Please try again later."
+)
+
 # Authentication configuration
-USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
-PASSWORD = os.environ.get('ADMIN_PASSWORD', 'changeme123')
+USERNAME = os.environ.get('ADMIN_USERNAME', 'pingpongadmin')
+PASSWORD = os.environ.get('ADMIN_PASSWORD')
 
 def check_auth(username, password):
     """Check if a username/password combination is valid."""
@@ -66,6 +83,7 @@ def check_auth(username, password):
 
 def requires_auth(f):
     @wraps(f)
+    @auth_limiter  # Apply rate limiting to all auth attempts
     def decorated(*args, **kwargs):
         auth = request.authorization
         if not auth or not check_auth(auth.username, auth.password):
@@ -741,6 +759,9 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.abspath(__file__))
     templates_dir = os.path.join(script_dir, "templates")
     os.makedirs(templates_dir, exist_ok=True)
+    
+    # Configure rate limit headers for debugging
+    app.config['RATELIMIT_HEADERS_ENABLED'] = True
     
     # Use port 5000
     app.run(debug=True, port=5000)
