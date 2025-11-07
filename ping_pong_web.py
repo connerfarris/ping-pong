@@ -8,6 +8,7 @@ from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from security import check_ip_block, log_failed_attempt, reset_failed_attempts, get_client_ip
 
 # Import statistics calculator
 from stats_calculator import get_all_statistics, get_match_expected_map
@@ -83,7 +84,9 @@ def check_auth(username, password):
 
 def requires_auth(f):
     @wraps(f)
+    @check_ip_block()  # Check if IP is blocked
     @auth_limiter  # Apply rate limiting to all auth attempts
+    @log_failed_attempt()  # Log failed attempts
     def decorated(*args, **kwargs):
         auth = request.authorization
         if not auth or not check_auth(auth.username, auth.password):
@@ -91,6 +94,9 @@ def requires_auth(f):
                 'Could not verify your access level for that URL.\n'
                 'You have to login with proper credentials', 401,
                 {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        
+        # Reset failed attempts on successful login
+        reset_failed_attempts(get_client_ip())
         return f(*args, **kwargs)
     return decorated
 
@@ -763,5 +769,14 @@ if __name__ == '__main__':
     # Configure rate limit headers for debugging
     app.config['RATELIMIT_HEADERS_ENABLED'] = True
     
+    # Security headers
+    @app.after_request
+    def add_security_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Content-Security-Policy'] = "default-src 'self'"
+        return response
+    
     # Use port 5000
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, threaded=True)
