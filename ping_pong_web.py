@@ -70,17 +70,17 @@ app.config.update(
     REMEMBER_COOKIE_DURATION=timedelta(hours=1)
 )
 
-# Initialize rate limiter
+# Initialize rate limiter - disabled in debug mode
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://"  # For production, consider using Redis
+    default_limits=["200 per day", "50 per hour"] if not app.debug else None,
+    storage_uri="memory://"
 )
 
-# Stricter rate limiting for authentication attempts
+# Stricter rate limiting for authentication attempts - disabled in debug mode
 auth_limiter = limiter.shared_limit(
-    "5 per minute",
+    "5 per minute" if not app.debug else "1000 per minute",
     scope="auth",
     error_message="Too many login attempts. Please try again later."
 )
@@ -368,13 +368,21 @@ def convert_json_to_match_text(date_data):
 @app.route('/statistics')
 @requires_auth
 def statistics():
-    """Written by Windsurf
-    Display statistics page with various ping pong statistics
+    """Display statistics page with various ping pong statistics
+    
+    Query Parameters:
+        elo_window: Number of matches to consider for ELO calculation (default: 50)
     """
     try:
-        # Get all statistics
-        stats = get_all_statistics()
-        return render_template('statistics.html', stats=stats)
+        # Get window size from query parameter, default to 50
+        window_size = request.args.get('elo_window', default=50, type=int)
+        
+        # Ensure window size is at least 1
+        window_size = max(1, window_size)
+        
+        # Get all statistics with the specified window size
+        stats = get_all_statistics(elo_window=window_size)
+        return render_template('statistics.html', stats=stats, elo_window=window_size)
     except Exception as e:
         flash(f"An error occurred: {str(e)}", "error")
         return redirect(url_for('index'))
@@ -430,13 +438,13 @@ def add_player():
 
 @app.route('/delete_player/<player_name>', methods=['POST'])
 @requires_auth
-def delete_player():
-    """Written by Windsurf
-    Delete a player
+def delete_player(player_name):
+    """Delete a player
+    
+    Args:
+        player_name (str): Name of the player to delete (from URL parameter)
     """
     try:
-        player_name = player_name
-        player_name = request.form.get('player_name', '').strip()
         if not player_name:
             flash("Player name cannot be empty", "error")
             return redirect(url_for('players'))

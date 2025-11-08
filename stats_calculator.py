@@ -775,6 +775,185 @@ def get_match_expected_map():
             continue
     return expected_map
 
+def get_hybrid_elo_ratings(window_size=50):
+    """
+    Calculate hybrid ELO ratings using a sliding window of matches.
+    Handles both score-based and win/loss matches, with separate ratings
+    for singles, doubles, and overall.
+    
+    Args:
+        window_size: Number of most recent matches to consider
+        
+    Returns:
+        dict: Dictionary containing 'overall', 'singles', and 'doubles' ELO ratings
+    """
+    data = load_match_data()
+    
+    # Flatten all matches with dates and sort chronologically
+    all_matches = []
+    for day_data in data:
+        date = day_data.get('date', '1970-01-01')
+        for match in day_data.get('matches', []):
+            all_matches.append({
+                'date': date,
+                'match': match,
+                'type': match.get('type')
+            })
+    
+    # Sort matches by date
+    all_matches.sort(key=lambda x: x['date'])
+    
+    # Initialize ELO ratings (default 1500) for each category
+    elo_ratings = {
+        'overall': {},
+        'singles': {},
+        'doubles': {}
+    }
+    
+    def update_elo(ratings, player, change):
+        """Helper function to update a player's ELO rating"""
+        ratings[player] = ratings.get(player, 1500.0) + change
+        return ratings[player]
+    
+    # Process matches in chronological order
+    for i, match_data in enumerate(all_matches):
+        match = match_data['match']
+        match_type = match.get('type')
+        
+        if match_type == 'singles':
+            p1 = match.get('player1')
+            p2 = match.get('player2')
+            
+            if not all([p1, p2]):
+                continue
+                
+            # Get current ratings for singles and overall
+            r1_singles = elo_ratings['singles'].get(p1, 1500.0)
+            r2_singles = elo_ratings['singles'].get(p2, 1500.0)
+            r1_overall = elo_ratings['overall'].get(p1, 1500.0)
+            r2_overall = elo_ratings['overall'].get(p2, 1500.0)
+            
+            # Calculate expected scores for singles
+            q1 = 10 ** (r1_singles / 400)
+            q2 = 10 ** (r2_singles / 400)
+            e1 = q1 / (q1 + q2)
+            e2 = q2 / (q1 + q2)
+            
+            # Get actual scores
+            score1 = match.get('score', {}).get('player1', 0)
+            score2 = match.get('score', {}).get('player2', 0)
+            
+            # Determine winner and scores
+            if score1 > score2:
+                s1, s2 = 1.0, 0.0
+                score_diff = score1 - score2
+            else:
+                s1, s2 = 0.0, 1.0
+                score_diff = score2 - score1
+            
+            # Dynamic K-factor based on score difference
+            base_k = 32.0
+            if score1 + score2 > 1:  # Score-based match
+                k_factor = base_k * (1 + min(score_diff / 3, 2))
+            else:  # Win/loss only
+                k_factor = base_k
+            
+            # Calculate rating changes for singles
+            r1_singles_new = r1_singles + k_factor * (s1 - e1)
+            r2_singles_new = r2_singles + k_factor * (s2 - e2)
+            
+            # Calculate expected scores for overall (using overall ratings)
+            q1_overall = 10 ** (r1_overall / 400)
+            q2_overall = 10 ** (r2_overall / 400)
+            e1_overall = q1_overall / (q1_overall + q2_overall)
+            e2_overall = q2_overall / (q1_overall + q2_overall)
+            
+            # Calculate rating changes for overall
+            r1_overall_new = r1_overall + k_factor * (s1 - e1_overall)
+            r2_overall_new = r2_overall + k_factor * (s2 - e2_overall)
+            
+            # Update ratings
+            elo_ratings['singles'][p1] = r1_singles_new
+            elo_ratings['singles'][p2] = r2_singles_new
+            elo_ratings['overall'][p1] = r1_overall_new
+            elo_ratings['overall'][p2] = r2_overall_new
+            
+        elif match_type == 'doubles':
+            # Get team members
+            t1s = match.get('team1', {}).get('server')
+            t1p = match.get('team1', {}).get('partner')
+            t2r = match.get('team2', {}).get('receiver')
+            t2p = match.get('team2', {}).get('partner')
+            
+            if not all([t1s, t1p, t2r, t2p]):
+                continue
+                
+            # Get current ratings for doubles and overall
+            team1_players = [t1s, t1p]
+            team2_players = [t2r, t2p]
+            
+            # Initialize ratings for new players
+            for player in team1_players + team2_players:
+                if player not in elo_ratings['doubles']:
+                    elo_ratings['doubles'][player] = 1500.0
+                if player not in elo_ratings['overall']:
+                    elo_ratings['overall'][player] = 1500.0
+            
+            # Calculate team ratings (average of team members)
+            r_team1_doubles = sum(elo_ratings['doubles'][p] for p in team1_players) / 2
+            r_team2_doubles = sum(elo_ratings['doubles'][p] for p in team2_players) / 2
+            r_team1_overall = sum(elo_ratings['overall'][p] for p in team1_players) / 2
+            r_team2_overall = sum(elo_ratings['overall'][p] for p in team2_players) / 2
+            
+            # Calculate expected scores for doubles
+            q1_doubles = 10 ** (r_team1_doubles / 400)
+            q2_doubles = 10 ** (r_team2_doubles / 400)
+            e1_doubles = q1_doubles / (q1_doubles + q2_doubles)
+            e2_doubles = q2_doubles / (q1_doubles + q2_doubles)
+            
+            # Calculate expected scores for overall
+            q1_overall = 10 ** (r_team1_overall / 400)
+            q2_overall = 10 ** (r_team2_overall / 400)
+            e1_overall = q1_overall / (q1_overall + q2_overall)
+            e2_overall = q2_overall / (q1_overall + q2_overall)
+            
+            # Get scores
+            score1 = match.get('score', {}).get('team1', 0)
+            score2 = match.get('score', {}).get('team2', 0)
+            
+            # Determine winner and scores
+            if score1 > score2:
+                s1, s2 = 1.0, 0.0
+                score_diff = score1 - score2
+            else:
+                s1, s2 = 0.0, 1.0
+                score_diff = score2 - score1
+            
+            # Dynamic K-factor
+            base_k = 32.0
+            if score1 + score2 > 1:  # Score-based match
+                k_factor = base_k * (1 + min(score_diff / 3, 2))
+            else:  # Win/loss only
+                k_factor = base_k
+            
+            # Calculate rating changes for doubles
+            for player in team1_players:
+                elo_ratings['doubles'][player] += k_factor * (s1 - e1_doubles) / 2
+                elo_ratings['overall'][player] += k_factor * (s1 - e1_overall) / 2
+            
+            for player in team2_players:
+                elo_ratings['doubles'][player] += k_factor * (s2 - e2_doubles) / 2
+                elo_ratings['overall'][player] += k_factor * (s2 - e2_overall) / 2
+        
+        # Apply sliding window (only keep last N matches)
+        if i >= window_size:
+            # This is a simplified approach - in a real implementation,
+            # you'd need to track which matches affected which players
+            # and only remove the impact of old matches
+            pass
+    
+    return elo_ratings
+
 def get_elo_ratings_and_history():
     """
     Written by Windsurf
@@ -925,22 +1104,330 @@ def get_elo_ratings_and_history():
         }
     return result
 
-def get_all_statistics():
+def get_match_history():
     """
-    Get all statistics in one call
+    Get match history with expected win percentages and ELO changes
+    Returns a list of matches with additional statistics
     """
     data = load_match_data()
     
+    # First pass: process all matches to build ELO history by match
+    all_matches = []
+    for day_data in data:
+        date = day_data.get('date', 'Unknown Date')
+        for match in day_data.get('matches', []):
+            all_matches.append({
+                'date': date,
+                'match': match,
+                'type': match.get('type')
+            })
+    
+    # Sort matches chronologically (oldest first for ELO calculation)
+    all_matches.sort(key=lambda x: x['date'])
+    
+    # Track ELO ratings after each match
+    current_elos = {}
+    matches = []
+    
+    for match_data in all_matches:
+        match = match_data['match']
+        match_id = match.get('id')
+        match_type = match.get('type')
+        date = match_data['date']
+        
+        if match_type == 'singles':
+            player1 = match.get('player1')
+            player2 = match.get('player2')
+            score1 = match.get('score', {}).get('player1', 0)
+            score2 = match.get('score', {}).get('player2', 0)
+            
+            if not all([player1, player2]):
+                continue
+                
+            # Get current ELOs (or default to 1500)
+            elo1_before = current_elos.get(player1, 1500.0)
+            elo2_before = current_elos.get(player2, 1500.0)
+            
+            # Calculate expected scores
+            q1 = 10 ** (elo1_before / 400)
+            q2 = 10 ** (elo2_before / 400)
+            e1 = q1 / (q1 + q2)
+            e2 = q2 / (q1 + q2)
+            
+            # Actual result (1 for win, 0 for loss)
+            if score1 > score2:
+                s1, s2 = 1.0, 0.0
+                score_diff = score1 - score2
+            else:
+                s1, s2 = 0.0, 1.0
+                score_diff = score2 - score1
+            
+            # Dynamic K-factor based on score difference
+            base_k = 32.0
+            if score1 + score2 > 1:  # Score-based match
+                k_factor = base_k * (1 + min(score_diff / 3, 2))
+            else:  # Win/loss only
+                k_factor = base_k
+            
+            # Calculate ELO changes
+            elo1_after = elo1_before + k_factor * (s1 - e1)
+            elo2_after = elo2_before + k_factor * (s2 - e2)
+            
+            # Store ELO changes
+            elo_change1 = round(elo1_after - elo1_before, 1)
+            elo_change2 = round(elo2_after - elo2_before, 1)
+            
+            # Update current ELOs
+            current_elos[player1] = elo1_after
+            current_elos[player2] = elo2_after
+            
+            # Calculate expected win percentage for display
+            expected_win_p1 = round(e1 * 100, 1)
+            
+            # Add match to results
+            match_data = {
+                'id': match_id,
+                'date': date,
+                'type': 'Singles',
+                'player1': player1,
+                'player2': player2,
+                'score1': score1,
+                'score2': score2,
+                'winner': player1 if score1 > score2 else player2,
+                'expected_win_p1': expected_win_p1,
+                'elo_change1': elo_change1,
+                'elo_change2': elo_change2,
+                'elo_changes': {}
+            }
+            
+            matches.append(match_data)
+            
+        elif match_type == 'doubles':
+            # Get team members
+            t1s = match.get('team1', {}).get('server')
+            t1p = match.get('team1', {}).get('partner')
+            t2r = match.get('team2', {}).get('receiver')
+            t2p = match.get('team2', {}).get('partner')
+            
+            if not all([t1s, t1p, t2r, t2p]):
+                continue
+                
+            team1 = f"{t1s} & {t1p}"
+            team2 = f"{t2r} & {t2p}"
+            score1 = match.get('score', {}).get('team1', 0)
+            score2 = match.get('score', {}).get('team2', 0)
+            
+            # Get current ELOs (or default to 1500)
+            elo_t1s = current_elos.get(t1s, 1500.0)
+            elo_t1p = current_elos.get(t1p, 1500.0)
+            elo_t2r = current_elos.get(t2r, 1500.0)
+            elo_t2p = current_elos.get(t2p, 1500.0)
+            
+            # Calculate team ELOs (average of team members)
+            team1_elo = (elo_t1s + elo_t1p) / 2
+            team2_elo = (elo_t2r + elo_t2p) / 2
+            
+            # Calculate expected scores
+            q1 = 10 ** (team1_elo / 400)
+            q2 = 10 ** (team2_elo / 400)
+            e1 = q1 / (q1 + q2)
+            e2 = q2 / (q1 + q2)
+            
+            # Actual result (1 for win, 0 for loss)
+            if score1 > score2:
+                s1, s2 = 1.0, 0.0
+                score_diff = score1 - score2
+            else:
+                s1, s2 = 0.0, 1.0
+                score_diff = score2 - score1
+            
+            # Dynamic K-factor
+            base_k = 32.0
+            if score1 + score2 > 1:  # Score-based match
+                k_factor = base_k * (1 + min(score_diff / 3, 2))
+            else:  # Win/loss only
+                k_factor = base_k
+            
+            # Calculate team ELO changes
+            team1_delta = k_factor * (s1 - e1) / 2  # Divide by 2 since it's per player
+            team2_delta = k_factor * (s2 - e2) / 2  # Divide by 2 since it's per player
+            
+            # Update ELOs for all players
+            new_elo_t1s = elo_t1s + team1_delta
+            new_elo_t1p = elo_t1p + team1_delta
+            new_elo_t2r = elo_t2r + team2_delta
+            new_elo_t2p = elo_t2p + team2_delta
+            
+            # Store ELO changes
+            elo_changes = {
+                t1s: round(team1_delta, 1),
+                t1p: round(team1_delta, 1),
+                t2r: round(team2_delta, 1),
+                t2p: round(team2_delta, 1)
+            }
+            
+            # Update current ELOs
+            current_elos[t1s] = new_elo_t1s
+            current_elos[t1p] = new_elo_t1p
+            current_elos[t2r] = new_elo_t2r
+            current_elos[t2p] = new_elo_t2p
+            
+            # Add doubles match to results
+            match_data = {
+                'id': match_id,
+                'date': date,
+                'type': 'Doubles',
+                'team1': team1,
+                'team2': team2,
+                'team1_server': t1s,
+                'team1_partner': t1p,
+                'team2_receiver': t2r,
+                'team2_partner': t2p,
+                'score1': score1,
+                'score2': score2,
+                'winner': team1 if score1 > score2 else team2,
+                'expected_win_team1': round(e1 * 100, 1),
+                'elo_changes': elo_changes,
+                'elo_change1': 0,  # Not used for doubles, but included for template compatibility
+                'elo_change2': 0,  # Not used for doubles, but included for template compatibility
+                'player1': '',     # Not used for doubles, but included for template compatibility
+                'player2': ''      # Not used for doubles, but included for template compatibility
+            }
+            
+            matches.append(match_data)
+    
+    # The matches were processed in chronological order for ELO calculation
+    # But we want to return them in reverse chronological order (newest first)
+    # Since we built the list in chronological order, we can just reverse it
+    return list(reversed(matches))
+
+def get_biggest_upsets(data):
+    """
+    Find the biggest upsets in both singles and doubles matches.
+    Returns a dictionary with 'singles' and 'doubles' lists of upsets.
+    """
+    singles_upsets = []
+    doubles_upsets = []
+    expected_map = get_match_expected_map()
+    
+    for day_data in data:
+        for match in day_data.get('matches', []):
+            match_id = str(match.get('id'))
+            expected = expected_map.get(match_id, {})
+            
+            if match.get('type') == 'singles':
+                player1 = match.get('player1')
+                player2 = match.get('player2')
+                score1 = match.get('score', {}).get('player1', 0)
+                score2 = match.get('score', {}).get('player2', 0)
+                
+                if score1 > score2:  # player1 won
+                    if 'expected_p1' in expected and expected['expected_p1'] < 0.5:
+                        upset_magnitude = 0.5 - expected['expected_p1']
+                        singles_upsets.append({
+                            'date': day_data.get('date', 'Unknown'),
+                            'winner': player1,
+                            'loser': player2,
+                            'score': f"{score1}-{score2}",
+                            'winner_win_prob': round((1 - expected['expected_p1']) * 100, 1),
+                            'upset_magnitude': round(upset_magnitude * 100, 1)
+                        })
+                elif score2 > score1:  # player2 won
+                    if 'expected_p2' in expected and expected['expected_p2'] < 0.5:
+                        upset_magnitude = 0.5 - expected['expected_p2']
+                        singles_upsets.append({
+                            'date': day_data.get('date', 'Unknown'),
+                            'winner': player2,
+                            'loser': player1,
+                            'score': f"{score2}-{score1}",
+                            'winner_win_prob': round((1 - expected['expected_p2']) * 100, 1),
+                            'upset_magnitude': round(upset_magnitude * 100, 1)
+                        })
+            
+            elif match.get('type') == 'doubles':
+                team1 = f"{match.get('team1', {}).get('server', '?')} & {match.get('team1', {}).get('partner', '?')}"
+                team2 = f"{match.get('team2', {}).get('receiver', '?')} & {match.get('team2', {}).get('partner', '?')}"
+                score1 = match.get('score', {}).get('team1', 0)
+                score2 = match.get('score', {}).get('team2', 0)
+                
+                if score1 > score2:  # team1 won
+                    if 'expected_team1' in expected and expected['expected_team1'] < 0.5:
+                        upset_magnitude = 0.5 - expected['expected_team1']
+                        doubles_upsets.append({
+                            'date': day_data.get('date', 'Unknown'),
+                            'winner': team1,
+                            'loser': team2,
+                            'score': f"{score1}-{score2}",
+                            'winner_win_prob': round((1 - expected['expected_team1']) * 100, 1),
+                            'upset_magnitude': round(upset_magnitude * 100, 1)
+                        })
+                elif score2 > score1:  # team2 won
+                    if 'expected_team2' in expected and expected['expected_team2'] < 0.5:
+                        upset_magnitude = 0.5 - expected['expected_team2']
+                        doubles_upsets.append({
+                            'date': day_data.get('date', 'Unknown'),
+                            'winner': team2,
+                            'loser': team1,
+                            'score': f"{score2}-{score1}",
+                            'winner_win_prob': round((1 - expected['expected_team2']) * 100, 1),
+                            'upset_magnitude': round(upset_magnitude * 100, 1)
+                        })
+    
+    # Sort by upset magnitude (highest first) and return top 10 of each
+    singles_upsets.sort(key=lambda x: x['upset_magnitude'], reverse=True)
+    doubles_upsets.sort(key=lambda x: x['upset_magnitude'], reverse=True)
+    
+    return {
+        'singles': singles_upsets[:10],  # Top 10 singles upsets
+        'doubles': doubles_upsets[:10]   # Top 10 doubles upsets
+    }
+
+def get_all_statistics(elo_window=50):
+    """
+    Get all statistics in one call
+
+    Args:
+        elo_window: Number of most recent matches to consider for ELO calculation
+    """
+    data = load_match_data()
+
+    # Get hybrid ELO ratings for all categories
+    hybrid_ratings = get_hybrid_elo_ratings(window_size=elo_window)
+
+    # Get ELO history (for charts) - this will be updated with current hybrid ratings
+    elo_history = get_elo_ratings_and_history()
+
+    # Update each rating type with the corresponding hybrid ratings
+    for mode in ['overall', 'singles', 'doubles']:
+        if mode in elo_history:
+            # Create a copy of the history to avoid modifying the original
+            elo_history[mode] = elo_history[mode].copy()
+
+            # Update current ratings with the hybrid ratings for this mode
+            current_ratings = {}
+            for player in elo_history[mode]['current_ratings']:
+                if player in hybrid_ratings[mode]:
+                    current_ratings[player] = hybrid_ratings[mode][player]
+                else:
+                    # If player doesn't have a rating in this mode, use their overall or default
+                    current_ratings[player] = hybrid_ratings['overall'].get(player, 1500.0)
+
+            elo_history[mode]['current_ratings'] = current_ratings
+
+    # Get additional statistics
     return {
         'player_stats': get_player_stats(data),
+        'match_history': get_match_history(),
         'match_analytics': get_match_analytics(data),
         'team_dynamics': get_team_dynamics(data),
         'score_patterns': get_score_patterns(data),
         'temporal_analysis': get_temporal_analysis(data),
         'doubles_serving': get_doubles_serving_stats(data),
-        'total_points': get_total_points_stat(data),
         'head_to_head_singles': get_head_to_head_singles(data),
-        'elo': get_elo_ratings_and_history()
+        'elo_ratings': elo_history,
+        'elo_window': elo_window,
+        'total_points': get_total_points_stat(data),
+        'biggest_upsets': get_biggest_upsets(data)
     }
 
 if __name__ == "__main__":

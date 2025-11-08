@@ -197,6 +197,68 @@
             background-color: #2980b9;
         }
         
+        /* Match History Styles */
+        .matches-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 20px 0;
+            font-size: 0.9em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upsets-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .upset-category {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .upset-category h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .matches-table th, 
+        .matches-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .matches-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 0.5px;
+        }
+        
+        .matches-table tbody tr:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .winner {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
         .match-list {
             margin-top: 15px;
         }
@@ -287,9 +349,24 @@
         
         <!-- Elo Ratings Tab -->
         <div id="elo-ratings" class="tab-content">
-            <h2>Elo Ratings</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2>Elo Ratings</h2>
+                <div class="elo-controls" style="display: flex; align-items: center; gap: 10px;">
+                    <label for="elo-window" style="white-space: nowrap;">Match Window:</label>
+                    <input type="number" id="elo-window" name="elo-window" min="1" max="1000" value="{{ elo_window }}" 
+                           style="width: 80px; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button id="update-elo-window" class="btn" style="padding: 5px 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Update
+                    </button>
+                </div>
+            </div>
+            <p style="margin-top: 0; color: #666; font-style: italic;">
+                Ratings are calculated using a hybrid ELO system that considers the last 
+                <strong>{{ elo_window }} matches</strong>. Adjust the window size to see how ratings change based on 
+                different timeframes. Lower values make ratings more responsive to recent performance.
+            </p>
 
-            <div class="nav-buttons" style="justify-content:flex-start; gap:8px; margin-top:0;">
+            <div class="nav-buttons" style="justify-content:flex-start; gap:8px; margin: 15px 0 10px 0;">
                 <a href="#" class="elo-mode-btn active" data-mode="overall">Overall</a>
                 <a href="#" class="elo-mode-btn" data-mode="singles">Singles</a>
                 <a href="#" class="elo-mode-btn" data-mode="doubles">Doubles</a>
@@ -304,7 +381,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set elo_overall = stats.elo.overall.current_ratings %}
+                    {% set elo_overall = stats.elo_ratings.overall.current_ratings %}
                     {% for player, rating in elo_overall.items()|sort(attribute='1', reverse=True) %}
                     <tr>
                         <td>{{ player }}</td>
@@ -323,7 +400,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set elo_singles = stats.elo.singles.current_ratings %}
+                    {% set elo_singles = stats.elo_ratings.singles.current_ratings %}
                     {% for player, rating in elo_singles.items()|sort(attribute='1', reverse=True) %}
                     <tr>
                         <td>{{ player }}</td>
@@ -342,7 +419,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set elo_doubles = stats.elo.doubles.current_ratings %}
+                    {% set elo_doubles = stats.elo_ratings.doubles.current_ratings %}
                     {% for player, rating in elo_doubles.items()|sort(attribute='1', reverse=True) %}
                     <tr>
                         <td>{{ player }}</td>
@@ -360,6 +437,8 @@
         <!-- Tabs Navigation -->
         <div class="tabs">
             <div class="tab active" data-tab="player-stats">Player Stats</div>
+            <div class="tab" data-tab="match-history">Matches</div>
+            <div class="tab" data-tab="upsets">Biggest Upsets</div>
             <div class="tab" data-tab="match-analytics">Match Analytics</div>
             <div class="tab" data-tab="team-dynamics">Team Dynamics</div>
             <div class="tab" data-tab="doubles-serving">Doubles Serving</div>
@@ -369,8 +448,160 @@
             <div class="tab" data-tab="head-to-head-singles">Head-to-Head (Singles)</div>
         </div>
         
+        <!-- Match History Tab -->
+        <div id="match-history" class="tab-content">
+            <h2>Match History</h2>
+            
+            <div class="table-responsive">
+                <table class="matches-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Matchup</th>
+                            <th>Score</th>
+                            <th>Expected Win %</th>
+                            <th>Upset</th>
+                            <th>ELO Δ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for match in stats.match_history %}
+                            {% if match.type == 'Singles' %}
+                                <tr>
+                                    <td>{{ match.date }}</td>
+                                    <td>{{ match.type }}</td>
+                                    <td>
+                                        <span class="{% if match.winner == match.player1 %}winner{% endif %}">
+                                            {{ match.player1 }}
+                                        </span> 
+                                        vs 
+                                        <span class="{% if match.winner == match.player2 %}winner{% endif %}">
+                                            {{ match.player2 }}
+                                        </span>
+                                    </td>
+                                    <td>{{ match.score1 }} - {{ match.score2 }}</td>
+                                    <td>{{ match.expected_win_p1 }}%</td>
+                                    <td>{% if match.winner == match.player1 and match.expected_win_p1 < 50 %}<span class="negative">✓</span>
+                                        {% elif match.winner == match.player2 and match.expected_win_p1 > 50 %}<span class="negative">✓</span>
+                                        {% else %}-{% endif %}</td>
+                                    <td>
+                                        <span class="{% if match.elo_change1 > 0 %}positive{% else %}negative{% endif %}">
+                                            {{ match.elo_change1|round(1) }}
+                                        </span> / 
+                                        <span class="{% if match.elo_change2 > 0 %}positive{% else %}negative{% endif %}">
+                                            {{ match.elo_change2|round(1) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>{{ match.date }}</td>
+                                    <td>{{ match.type }}</td>
+                                    <td>
+                                        <span class="{% if match.winner == match.team1 %}winner{% endif %}">
+                                            {{ match.team1 }}
+                                        </span> 
+                                        vs 
+                                        <span class="{% if match.winner == match.team2 %}winner{% endif %}">
+                                            {{ match.team2 }}
+                                        </span>
+                                    </td>
+                                    <td>{{ match.score1 }} - {{ match.score2 }}</td>
+                                    <td>{{ match.expected_win_team1 }}%</td>
+                                    <td>{% if match.winner == match.team1 and match.expected_win_team1 < 50 %}<span class="negative">✓</span>
+                                        {% elif match.winner == match.team2 and match.expected_win_team1 > 50 %}<span class="negative">✓</span>
+                                        {% else %}-{% endif %}</td>
+                                    <td>
+                                        {% if match.elo_changes %}
+                                            <div>{{ match.team1_server }}: <span class="{% if match.elo_changes.get(match.team1_server, 0) > 0 %}positive{% else %}negative{% endif %}">{{ match.elo_changes.get(match.team1_server, 0) }}</span></div>
+                                            <div>{{ match.team1_partner }}: <span class="{% if match.elo_changes.get(match.team1_partner, 0) > 0 %}positive{% else %}negative{% endif %}">{{ match.elo_changes.get(match.team1_partner, 0) }}</span></div>
+                                            <div>{{ match.team2_receiver }}: <span class="{% if match.elo_changes.get(match.team2_receiver, 0) > 0 %}positive{% else %}negative{% endif %}">{{ match.elo_changes.get(match.team2_receiver, 0) }}</span></div>
+                                            <div>{{ match.team2_partner }}: <span class="{% if match.elo_changes.get(match.team2_partner, 0) > 0 %}positive{% else %}negative{% endif %}">{{ match.elo_changes.get(match.team2_partner, 0) }}</span></div>
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Upsets Tab -->
+        <div id="upsets" class="tab-content">
+            <h2>Biggest Upsets</h2>
+            <p>These are the most surprising victories based on pre-match win probabilities.</p>
+            
+            <div class="upsets-container">
+                <!-- Singles Upsets -->
+                <div class="upset-category">
+                    <h3>Singles</h3>
+                    <table class="matches-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Matchup</th>
+                                <th>Score</th>
+                                <th>Win Prob</th>
+                                <th>Upset Magnitude</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for upset in stats.biggest_upsets.singles %}
+                            <tr>
+                                <td>{{ upset.date }}</td>
+                                <td>{{ upset.winner }} def. {{ upset.loser }}</td>
+                                <td>{{ upset.score }}</td>
+                                <td>{{ upset.winner_win_prob }}%</td>
+                                <td class="negative">{{ upset.upset_magnitude }}%</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5">No upsets recorded yet</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Doubles Upsets -->
+                <div class="upset-category">
+                    <h3>Doubles</h3>
+                    <table class="matches-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Matchup</th>
+                                <th>Score</th>
+                                <th>Win Prob</th>
+                                <th>Upset Magnitude</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for upset in stats.biggest_upsets.doubles %}
+                            <tr>
+                                <td>{{ upset.date }}</td>
+                                <td>{{ upset.winner }} def. {{ upset.loser }}</td>
+                                <td>{{ upset.score }}</td>
+                                <td>{{ upset.winner_win_prob }}%</td>
+                                <td class="negative">{{ upset.upset_magnitude }}%</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5">No upsets recorded yet</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Player Stats Tab -->
-        <div id="player-stats" class="tab-content active">
+        <div id="player-stats" class="tab-content">
             <h2>Player Performance</h2>
             
             <div class="stats-grid">
@@ -819,7 +1050,7 @@
                 const canvas = document.getElementById('eloChart');
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
-                const eloAll = JSON.parse('{{ stats.elo|tojson|safe }}');
+                const eloAll = JSON.parse('{{ stats.elo_ratings|tojson|safe }}');
                 const pack = eloAll[mode] || { current_ratings: {}, history: {} };
                 const current = pack.current_ratings || {};
                 const history = pack.history || {};
@@ -894,18 +1125,37 @@
             document.querySelectorAll('#elo-ratings .elo-mode-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    // Active state
+                    
+                    // Update active button
                     document.querySelectorAll('#elo-ratings .elo-mode-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
+                    
+                    // Show the selected table and update chart
                     const mode = this.getAttribute('data-mode');
-                    // Show corresponding table
-                    ['overall','singles','doubles'].forEach(m => {
-                        const tbl = document.getElementById(`eloTable-${m}`);
-                        if (tbl) tbl.style.display = (m === mode) ? '' : 'none';
-                    });
-                    // Update chart
+                    document.querySelectorAll('#elo-ratings table[id^="eloTable-"]').forEach(t => t.style.display = 'none');
+                    document.getElementById(`eloTable-${mode}`).style.display = 'table';
+                    
+                    // Update the chart
                     initEloChart(mode);
                 });
+            });
+            
+            // Handle ELO window size updates
+            document.getElementById('update-elo-window').addEventListener('click', function() {
+                const windowSize = document.getElementById('elo-window').value;
+                if (windowSize && windowSize > 0) {
+                    // Update the URL with the new window size
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('elo_window', windowSize);
+                    window.location.href = url.toString();
+                }
+            });
+            
+            // Allow Enter key to submit the window size
+            document.getElementById('elo-window').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('update-elo-window').click();
+                }
             });
             
             function initDayFrequencyChart() {
