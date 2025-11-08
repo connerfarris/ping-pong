@@ -8,6 +8,7 @@ from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_sqlalchemy import SQLAlchemy
 from security import check_ip_block, log_failed_attempt, reset_failed_attempts, get_client_ip
 
 # Import statistics calculator
@@ -16,59 +17,68 @@ from stats_calculator import get_all_statistics, get_match_expected_map
 # Import the parsing function from the existing script
 from parse_ping_pong_matches import parse_ping_pong_matches
 
+# Initialize Flask app
+app = Flask(__name__)
+
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///ping_pong.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize database
+db = SQLAlchemy(app)
+
+# Import models after db initialization to avoid circular imports
+from models import Player, Match
+
+# Import for migrations
+from flask_migrate import Migrate
+
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
+
 # Player management functions
 def load_players():
-    """Written by Windsurf
-    Load player names from players.json
-    """
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    players_file = os.path.join(script_dir, "players.json")
-    
-    if not os.path.exists(players_file):
-        # Create default players file if it doesn't exist
-        default_players = {
-            "players": ["Conner", "Ridzky", "Ryan", "Prasidh", "Carson", "Tanner"]
-        }
-        with open(players_file, 'w') as f:
-            json.dump(default_players, f, indent=2)
-        return default_players["players"]
-    
-    try:
-        with open(players_file, 'r') as f:
-            data = json.load(f)
-            return data.get("players", [])
-    except Exception as e:
-        print(f"Error loading players: {e}")
-        return []
+    """Load player names from the database"""
+    return [player.name for player in Player.query.order_by(Player.name).all()]
 
 def save_players(players):
-    """Written by Windsurf
-    Save player names to players.json
-    """
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    players_file = os.path.join(script_dir, "players.json")
-    
+    """Save player names to the database"""
     try:
-        with open(players_file, 'w') as f:
-            json.dump({"players": players}, f, indent=2)
-        return True
+        # Get existing players
+        existing_players = {p.name: p for p in Player.query.all()}
+        
+        # Add new players
+        for name in players:
+            if name not in existing_players:
+                player = Player(name=name)
+                db.session.add(player)
+        
+        # Remove players that are no longer in the list
+        for name, player in existing_players.items():
+            if name not in players:
+                db.session.delete(player)
+        
+        db.session.commit()
     except Exception as e:
+        db.session.rollback()
         print(f"Error saving players: {e}")
         return False
 
-app = Flask(__name__)
-
 # Session configuration
 app.config.update(
-    SECRET_KEY=os.environ.get('FLASK_SECRET_KEY', os.urandom(24).hex()),
-    PERMANENT_SESSION_LIFETIME=timedelta(hours=1),  # Session expires after 1 hour
+    SECRET_KEY=os.getenv('SECRET_KEY', 'dev'),
+    SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,  # Only send cookie over HTTPS
-    SESSION_COOKIE_SAMESITE='Lax',  # CSRF protection
-    REMEMBER_COOKIE_SECURE=True,
-    REMEMBER_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    PERMANENT_SESSION_LIFETIME=timedelta(days=30),
     REMEMBER_COOKIE_DURATION=timedelta(hours=1)
 )
+
+# Initialize database tables
+with app.app_context():
+    # This will be handled by migrations now
+    # db.create_all() is not needed when using Flask-Migrate
+    pass
 
 # Initialize rate limiter - disabled in debug mode
 limiter = Limiter(
