@@ -21,18 +21,16 @@ def restore_database(backup_file: str) -> bool:
         print(f"✗ Backup file not found: {backup_file}")
         return False
     
-    db_url = os.getenv('DATABASE_URL')
-    if not db_url:
-        print("✗ DATABASE_URL environment variable not set")
-        return False
+    db_url = os.getenv('DATABASE_URL', 'sqlite:///ping_pong.db')
+    db_file = db_url.replace('sqlite:///', '')
     
     try:
         print(f"🔄 Restoring from {backup_file}...")
-        cmd = f"psql {db_url} < {backup_file}"
-        subprocess.run(cmd, shell=True, check=True)
+        import shutil
+        shutil.copy2(backup_file, db_file)
         print("✅ Database restored successfully!")
         return True
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"✗ Restore failed: {e}")
         return False
 

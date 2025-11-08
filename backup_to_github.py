@@ -33,10 +33,11 @@ def create_backup() -> str:
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
     backup_file = backup_dir / f"db_backup_{timestamp}.sql"
     
-    # Dump database (using pg_dump for PostgreSQL)
+    # Copy SQLite database file
     try:
-        cmd = f"pg_dump {db_url} > {backup_file}"
-        subprocess.run(cmd, shell=True, check=True)
+        import shutil
+        db_file = os.getenv('DATABASE_URL', 'sqlite:///ping_pong.db').replace('sqlite:///', '')
+        shutil.copy2(db_file, backup_file)
         print(f"✓ Created backup: {backup_file}")
         return str(backup_file)
     except subprocess.CalledProcessError as e:
