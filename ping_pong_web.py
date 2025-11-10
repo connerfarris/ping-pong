@@ -28,7 +28,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Import models after db initialization to avoid circular imports
-from models import Player, Match
+from models import Player, SinglesMatch, DoublesMatch, Team
 
 # Import for migrations
 from flask_migrate import Migrate
@@ -788,6 +788,40 @@ def get_match(match_id):
         return jsonify({"error": "Match not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/backup', methods=['POST'])
+@requires_auth
+def create_backup():
+    """
+    Create a backup of the database and push it to GitHub
+    Requires authentication
+    """
+    try:
+        # Import here to avoid circular imports
+        from backup_to_github import backup_to_github
+        
+        # Run the backup
+        success, message = backup_to_github()
+        
+        if success:
+            return jsonify({
+                'status': 'success',
+                'message': 'Backup created and pushed to GitHub',
+                'details': message
+            }), 200
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'Backup failed',
+                'details': message
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': 'Backup failed',
+            'details': str(e)
+        }), 500
 
 def configure_app(app):
     # Trust first proxy (for when behind Cloudflare)

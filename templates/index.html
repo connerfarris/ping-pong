@@ -319,10 +319,13 @@
 </head>
 <body>
     <div class="container">
-        <div class="stats-button-container">
-            <a href="{{ url_for('statistics') }}">
+        <div class="button-container">
+            <a href="{{ url_for('statistics') }}" class="nav-button">
                 <button type="button" class="stats-button">View Statistics</button>
             </a>
+            <button type="button" class="backup-button" id="backupButton" title="Create a backup">
+                💾 Backup Data
+            </button>
             <a href="{{ url_for('players') }}">
                 <button type="button" class="stats-button">Manage Players</button>
             </a>
@@ -1028,6 +1031,84 @@
                 return tokens;
             }
         });
+
+        // Backup button functionality
+        document.getElementById('backupButton').addEventListener('click', async function() {
+            const button = this;
+            const originalText = button.textContent;
+            
+            try {
+                // Disable button and show loading state
+                button.disabled = true;
+                button.innerHTML = '&#x23F3; Backing up...';
+                
+                // Call the backup API
+                const response = await fetch('/api/backup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showFlashMessage('success', result.message || 'Backup completed successfully!');
+                } else {
+                    showFlashMessage('error', result.details || 'Backup failed. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('Backup error:', error);
+                showFlashMessage('error', 'Failed to create backup: ' + (error.message || 'Unknown error'));
+            } finally {
+                // Re-enable button and restore text
+                button.disabled = false;
+                button.innerHTML = originalText;
+                
+                // Show success/error message for 5 seconds
+                setTimeout(() => {
+                    const flash = document.querySelector('.flash');
+                    if (flash) {
+                        flash.style.transition = 'opacity 0.5s';
+                        flash.style.opacity = '0';
+                        setTimeout(() => flash.remove(), 500);
+                    }
+                }, 5000);
+            }
+        });
+        
+        // Helper function to show flash messages
+        function showFlashMessage(type, message) {
+            // Remove any existing flash messages
+            const existingFlash = document.querySelector('.flash');
+            if (existingFlash) {
+                existingFlash.remove();
+            }
+            
+            // Create and show new flash message
+            const flash = document.createElement('div');
+            flash.className = `flash ${type}`;
+            flash.textContent = message;
+            
+            // Insert after the h1 or at the beginning of the container
+            const container = document.querySelector('.container');
+            const h1 = container.querySelector('h1');
+            if (h1 && h1.nextSibling) {
+                container.insertBefore(flash, h1.nextSibling);
+            } else {
+                container.insertBefore(flash, container.firstChild);
+            }
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                flash.style.transition = 'opacity 0.5s';
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 500);
+            }, 5000);
+        }
     </script>
 </body>
 </html>
